@@ -18,6 +18,7 @@ import com.sunbeam.dtos.DtoEntityConverter;
 import com.sunbeam.dtos.UserDTO;
 //import com.sunbeam.entities.Blog;
 import com.sunbeam.entities.User;
+import com.sunbeam.entities.VehicleRegistration;
 
 @Transactional
 @Service
@@ -54,7 +55,7 @@ public class UserServiceImpl {
 		String rawPassword = cred.getPassword();
 		if(dbUser != null && passwordEncoder.matches(rawPassword, dbUser.getPassword())) {
 			UserDTO result = converter.toUserDto(dbUser);
-			result.setPassword("********");
+//			result.setPassword("********");
 			return result;
 		}
 		return null;
@@ -62,17 +63,27 @@ public class UserServiceImpl {
 
 	public UserDTO saveUser(UserDTO userDto) {
 		
+		
 		User newUser=findUserFromdbByEmail(userDto.getEmail());
-		if(newUser != null)
-			return null;
+		if(newUser != null) {
+			if(newUser.getAadhar_no()==null) {
+				UserDTO uDto=converter.toUserDto(newUser);
+				return  uDto;
+			}else {
+				
+				return null;
+			}
+		}
+	
 		String rawPassword = userDto.getPassword();
 		String encPassword = passwordEncoder.encode(rawPassword);
 		userDto.setPassword(encPassword);
 		User user = converter.toUserEntity(userDto);
 		user = userDao.save(user);
 		userDto = converter.toUserDto(user);
-		userDto.setPassword("*******");
+//		userDto.setPassword("*******");
 		return userDto;
+		
 	}
 	
 	
@@ -80,13 +91,17 @@ public class UserServiceImpl {
 	public User saveUserdb(User user) {
 		
 		User newUser=findUserFromdbByEmail(user.getEmail());
-		if(newUser != null)
-			return null;
+		if(newUser != null) {
+			if(newUser.getAadhar_no()==null) {
+				
+				return newUser;
+			}
+		}
 		String rawPassword = user.getPassword();
 		String encPassword = passwordEncoder.encode(rawPassword);
 		user.setPassword(encPassword);
 		User user1 = userDao.save(user);
-		user1.setPassword("*******");
+//		user1.setPassword("*******");
 		return user;
 	}
 	
@@ -94,4 +109,16 @@ public class UserServiceImpl {
 		List<User> userList = userDao.findAll();
 		return userList;
 	}
+	public User findByAadharNo(String aadhar_no) {
+		
+		int user_id= userDao.findIdByaadhar_no(aadhar_no);
+		User user=userDao.findById(user_id);
+		return user;
+	}
+	
+	public void updateUser(String address, long mobile_no,String password,int id) {
+		userDao.updateUser(address, mobile_no, password, id);
+	}
+
+	
 }

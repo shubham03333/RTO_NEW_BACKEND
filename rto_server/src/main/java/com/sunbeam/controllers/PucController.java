@@ -20,7 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sunbeam.daos.PucDao;
 import com.sunbeam.dtos.Response;
 import com.sunbeam.entities.Puc;
+import com.sunbeam.entities.VehicleRegistration;
 import com.sunbeam.services.PucServiceImpl;
+import com.sunbeam.services.UserServiceImpl;
+import com.sunbeam.services.VehicleRegistrationServiceImpl;
+import com.sunbeam.services.VehicleTransferServiceImpl;
 
 
 @CrossOrigin(origins = "*")
@@ -33,6 +37,14 @@ public class PucController {
 
 	@Autowired
 	private PucServiceImpl pucServiceImpl;
+	
+	@Autowired
+	private VehicleRegistrationServiceImpl vehicleRegistrationServiceImpl;
+	
+	@Autowired
+	private UserServiceImpl userServiceImpl;
+
+	private Puc puc;
 
 	@GetMapping("/search")
 	public ResponseEntity<?> findPuc() {
@@ -53,6 +65,12 @@ public class PucController {
 
 	@PostMapping("/add_puc")
 	public ResponseEntity<?> addPuc(@RequestBody Puc pollutionControl) {
+		
+		
+		System.out.println("its shubham1 "+vehicleRegistrationServiceImpl.findByregistration_no(pollutionControl.getRegistration_no()));
+		System.out.println("its shubham2222 "+userServiceImpl.findByAadharNo(pollutionControl.getAadhar_no()));
+
+//		System.out.println(registration);
 		Puc puc = pucServiceImpl.savePuc(pollutionControl);
 //		System.out.println(result);
 		if (puc == null)
@@ -88,8 +106,6 @@ public class PucController {
 		puc.setTo_date(pucDetails.getTo_date());
 		puc.setCo2(pucDetails.getCo2());
 		puc.setHc(pucDetails.getHc());
-		puc.setUser(puc.getUser());
-		puc.setVehicleRegistration(pucDetails.getVehicleRegistration());
 		puc.setPayment(pucDetails.getPayment());
 
 		Puc updatedPuc = pucServiceImpl.savePuc(puc);

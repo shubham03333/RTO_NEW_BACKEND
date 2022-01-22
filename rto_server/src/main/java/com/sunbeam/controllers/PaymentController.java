@@ -81,7 +81,7 @@ public class PaymentController {
 		}
 //				.orElseThrow(() -> new ResourceNotFoundException("User not exist with id :" + id));
 
-		payment.setPayment_id(paymentDetails.getPayment_id());
+//		payment.setPayment_id(paymentDetails.getPayment_id());
 		payment.setPayment_mode(paymentDetails.getPayment_mode());
 		payment.setAmount(paymentDetails.getAmount());
 		payment.setPayment_date(paymentDetails.getPayment_date());

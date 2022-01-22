@@ -26,6 +26,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.sunbeam.daos.DatabaseFileRepository;
 import com.sunbeam.daos.UserDao;
 import com.sunbeam.dtos.Credentials;
+import com.sunbeam.dtos.DtoEntityConverter;
 import com.sunbeam.dtos.Response;
 import com.sunbeam.dtos.UserDTO;
 import com.sunbeam.entities.DatabaseFile;
@@ -49,6 +50,10 @@ public class UserController {
 	
 	@Autowired
 	    private DatabaseFileService fileStorageService;
+	
+	User user;
+	@Autowired
+	DtoEntityConverter converter;
 	
 	DatabaseFile fileName;
 
@@ -94,24 +99,34 @@ public class UserController {
 			
 		userDto.setPhoto_id(this.fileName.getId());
 		fileName=null;
+		
+//		int userAadhar=userDao.findIdByaadhar_no(userDto.getAadhar_no());
+//		System.out.println(userAadhar);
+//		if(userAadhar<=0) {
+//			return Response.error("User already exists");
+//		}
+//		_
 		UserDTO result = userService.saveUser(userDto);
 		if(result==null)
-			return Response.error("Email already exists");
+		{
+			
+			return Response.error("Email already exists try to enter different Email");
+		}
+		else if(result.getAadhar_no()==null) {
+			User user = userService.findUserFromdbById(result.getId());
+//			UserDTO user0 = userService.findUserById(result.getId());
+			User user1 =converter.toUserEntity(userDto);
+			
+			
+			System.out.println(user1);
+			user1.setPassword(userDto.getPassword());
+			System.out.println(user1.getPassword());
+			this.updateUser(user.getId(), user1);
+		}
 		return Response.success(result);
 	}
 
 	
-//	@PostMapping("/register")
-//	public ResponseEntity<?> signUp2(@RequestParam("file") MultipartFile file,@RequestBody User user) {
-////		user.setDatabaseFile(databaseFile);
-////		databaseFile.setUser(user);
-//		
-//		User result = userDao.save(user);
-////		System.out.println(result);
-//		if(result==null)
-//			return Response.error("Email already exists");
-//		return Response.success(result);
-//	}
 	
 	@GetMapping("/search")
 	public ResponseEntity<?> findUser() {
@@ -131,7 +146,7 @@ public class UserController {
 			return ResponseEntity.ok(user);
 		}
 		
-		@PutMapping("/{id}")
+		@PutMapping("/update/{id}")
 		public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User UserDetails){
 			User user = userService.findUserFromdbById(id);
 			if(user==null) {
@@ -145,14 +160,36 @@ public class UserController {
 			user.setBlood_group(UserDetails.getBlood_group());
 			user.setEmail(UserDetails.getEmail());
 			user.setMobile_no(UserDetails.getMobile_no());
-//			user.setPassword(UserDetails.getPassword());
-			user.setPassword(passwordEncoder.encode(UserDetails.getPassword()));
+			user.setPassword(UserDetails.getPassword());
+//			user.setPassword(passwordEncoder.encode(UserDetails.getPassword()));
+			user.setAadhar_no(UserDetails.getAadhar_no());
+			user.setGender(UserDetails.getGender());
+			user.setRole(UserDetails.getRole());
+			user.setPhoto_id(UserDetails.getPhoto_id());
 			
 			
 			
 			User updatedUser = userService.saveUserdb(user);
 			return ResponseEntity.ok(updatedUser);
 		}
+		@PutMapping("/{id}")
+		public ResponseEntity<User> updateUser1(@PathVariable int id, @RequestBody User UserDetails){
+			User user = userService.findUserFromdbById(id);
+			if(user==null) {
+				return (ResponseEntity<User>) Response.error("User not exist with id :"+id);
+			}
+//					.orElseThrow(() -> new ResourceNotFoundException("User not exist with id :" + id));
+			
+
+			user.setAddress(UserDetails.getAddress());
+			user.setMobile_no(UserDetails.getMobile_no());
+			user.setPassword(UserDetails.getPassword());
+//			user.setPassword(passwordEncoder.encode(UserDetails.getPassword()));
+			
+			userService.updateUser(user.getAddress(),user.getMobile_no(),user.getPassword(),user.getId());
+			return ResponseEntity.ok(user);
+		}
+		
 		
 		// delete User rest api
 		@DeleteMapping("/{id}")

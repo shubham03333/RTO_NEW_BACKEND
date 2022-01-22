@@ -19,7 +19,6 @@ public class DatabaseFile {
 	private String fileType;
 	
 	@OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-	@JoinColumn(name="user_id")
 	private User user;
 
 	public User getUser() {

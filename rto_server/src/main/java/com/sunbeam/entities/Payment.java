@@ -21,39 +21,37 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "payment_table")
 public class Payment {
 
-	// | payment_refno | user_id | payment_id | payment_mode | amount | payment_date
-	// |
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
-	@Column(name = "payment_no")
+	@Column(name = "transaction_no")
 	private int id;
-	private int payment_id;
+	private String payment_for;
 	private String payment_mode;
 	private double amount;
+	private int user_id;
 	@Temporal(TemporalType.DATE)
 	private Date payment_date;
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_id")
 	private User user;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "registration_id")
-	private VehicleRegistration vehicleRegistration;
+//	@OneToOne(cascade = CascadeType.ALL)
+//	@JoinColumn(name = "registration_id")
+//	private VehicleRegistration vehicleRegistration;
 
 	public Payment() {
 	}
 
-	public Payment(int id, int payment_id, String payment_mode, double amount, Date payment_date, User user,
-			VehicleRegistration vehicleRegistration) {
+	public Payment(int id, String payment_for, String payment_mode, double amount, int user_id, Date payment_date,
+			User user) {
 		super();
 		this.id = id;
-		this.payment_id = payment_id;
+		this.payment_for = payment_for;
 		this.payment_mode = payment_mode;
 		this.amount = amount;
+		this.user_id = user_id;
 		this.payment_date = payment_date;
 		this.user = user;
-		this.vehicleRegistration = vehicleRegistration;
 	}
 
 	public int getId() {
@@ -64,12 +62,12 @@ public class Payment {
 		this.id = id;
 	}
 
-	public int getPayment_id() {
-		return payment_id;
+	public String getPayment_for() {
+		return payment_for;
 	}
 
-	public void setPayment_id(int payment_id) {
-		this.payment_id = payment_id;
+	public void setPayment_for(String payment_for) {
+		this.payment_for = payment_for;
 	}
 
 	public String getPayment_mode() {
@@ -88,6 +86,14 @@ public class Payment {
 		this.amount = amount;
 	}
 
+	public int getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(int user_id) {
+		this.user_id = user_id;
+	}
+
 	public Date getPayment_date() {
 		return payment_date;
 	}
@@ -104,20 +110,15 @@ public class Payment {
 		this.user = user;
 	}
 
-	public VehicleRegistration getVehicleRegistration() {
-		return vehicleRegistration;
-	}
-
-	public void setVehicleRegistration(VehicleRegistration vehicleRegistration) {
-		this.vehicleRegistration = vehicleRegistration;
-	}
-
 	@Override
 	public String toString() {
 		return String.format(
-				"Payment [id=%s, payment_id=%s, payment_mode=%s, amount=%s, payment_date=%s, user=%s, vehicleRegistration=%s]",
-				id, payment_id, payment_mode, amount, payment_date, user, vehicleRegistration);
+				"Payment [id=%s, payment_for=%s, payment_mode=%s, amount=%s, user_id=%s, payment_date=%s, user=%s]", id,
+				payment_for, payment_mode, amount, user_id, payment_date, user);
 	}
+
+
+
 
 	
 

@@ -39,4 +39,11 @@ public class VehicleRegistrationServiceImpl {
 		
 		vehicleRegistrationDao.delete(RC);
 	}
+	
+	public VehicleRegistration findByregistration_no(String reg_no) {
+		
+		int vehicle_id= vehicleRegistrationDao.findIdByregistration_no(reg_no);
+		VehicleRegistration vehiclereg=vehicleRegistrationDao.findByid(vehicle_id);
+		return vehiclereg;
+	}
 }
