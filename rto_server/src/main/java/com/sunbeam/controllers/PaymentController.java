@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sunbeam.daos.PaymentDao;
 import com.sunbeam.dtos.Response;
 import com.sunbeam.entities.Payment;
+import com.sunbeam.entities.User;
 import com.sunbeam.services.PaymentServiceImpl;
+import com.sunbeam.services.UserServiceImpl;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -33,6 +35,8 @@ public class PaymentController {
 	@Autowired
 	private PaymentServiceImpl paymentServiceImpl;
 
+	@Autowired
+	private UserServiceImpl userServiceImpl;
 	@GetMapping("/search")
 	public ResponseEntity<?> findPayment() {
 		List<Payment> result = new ArrayList<>();
@@ -43,16 +47,35 @@ public class PaymentController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Payment> getPaymentById(@PathVariable int id) {
 		Payment payment = paymentServiceImpl.findBYId(id);
+		
 		if (payment == null) {
 			return (ResponseEntity<Payment>) Response.error("Payment not exist with payment_refno :" + id);
 		}
+		User user=userServiceImpl.findUserFromdbById(payment.getUser_id());
+		payment.setUser(user);
+		System.out.println(payment.getUser());
 //				.orElseThrow(() -> new ResourceNotFoundException("Payment not exist with payment_refno :" + id));
 		return ResponseEntity.ok(payment);
 	}
+	
+	@GetMapping("/byUserId/{id}")
+	public ResponseEntity<Payment> getPaymentById1(@PathVariable int id) {
+		
+		Payment p = paymentServiceImpl.findLLBYUserId(id);
+		System.out.println(p);
+		if (p == null) {
+			return (ResponseEntity<Payment>) Response.error("Payment not exist with user_id  :" + id);
+		}
+//				.orElseThrow(() -> new ResourceNotFoundException("DrivingLicence not exist with temp_ll_id :" + id));
+		return ResponseEntity.ok(p);
+	}
+	
 
 	@PostMapping("/add_payment")
 	public ResponseEntity<?> addPayment(@RequestBody Payment pay) {
 		Payment payment = paymentServiceImpl.savePayment(pay);
+	
+		payment.setUser(userServiceImpl.findUserFromdbById(payment.getUser_id()));
 //		System.out.println(result);
 		if (payment == null)
 			return Response.error("Payment is empty");
@@ -72,6 +95,8 @@ public class PaymentController {
 		response.put("deleted", Boolean.TRUE);
 		return ResponseEntity.ok(response);
 	}
+	
+	
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Payment> updatePayment(@PathVariable int id, @RequestBody Payment paymentDetails) {

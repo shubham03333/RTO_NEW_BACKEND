@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,7 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sunbeam.daos.LlDao;
 import com.sunbeam.dtos.Response;
 import com.sunbeam.entities.LearningLicence;
+import com.sunbeam.entities.User;
+import com.sunbeam.services.EmailSenderServiceImpl;
 import com.sunbeam.services.LlServiceImpl;
+import com.sunbeam.services.UserServiceImpl;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -32,6 +37,13 @@ public class LlController {
 
 	@Autowired
 	private LlServiceImpl llServiceImpl;
+	
+	@Autowired
+	private UserServiceImpl userServiceImpl;
+
+	@Autowired
+	private EmailSenderServiceImpl emailSenderService;
+	
 
 	@GetMapping("/search")
 	public ResponseEntity<?> findLl() {
@@ -49,10 +61,23 @@ public class LlController {
 //				.orElseThrow(() -> new ResourceNotFoundException("DrivingLicence not exist with temp_ll_id :" + id));
 		return ResponseEntity.ok(ll);
 	}
+	
+	@GetMapping("/byUserId/{id}")
+	public ResponseEntity<LearningLicence> getLearningLicenceByUserId(@PathVariable int id) {
+		
+		LearningLicence ll = llServiceImpl.findLLBYUserId(id);
+		System.out.println(ll);
+		if (ll == null) {
+			return (ResponseEntity<LearningLicence>) Response.error("LearningLicence not exist with temp_ll_id :" + id);
+		}
+//				.orElseThrow(() -> new ResourceNotFoundException("DrivingLicence not exist with temp_ll_id :" + id));
+		return ResponseEntity.ok(ll);
+	}
 
 	@PostMapping("/add_ll")
 	public ResponseEntity<?> addRc(@RequestBody LearningLicence learningLicence) {
 		LearningLicence ll = llServiceImpl.saveLl(learningLicence);
+		
 //		System.out.println(result);
 		if (ll == null)
 			return Response.error("LearningLicence is empty");
@@ -75,21 +100,44 @@ public class LlController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<LearningLicence> updateUser(@PathVariable int id, @RequestBody LearningLicence llDetails) {
+	public ResponseEntity<LearningLicence> updateUser(@PathVariable int id, @RequestBody LearningLicence llDetails) throws MessagingException {
 		LearningLicence ll = llServiceImpl.findBYId(id);
 		if (ll == null) {
 			return (ResponseEntity<LearningLicence>) Response.error("LearningLicence not exist with temp_ll_id :" + id);
 		}
 //				.orElseThrow(() -> new ResourceNotFoundException("User not exist with id :" + id));
+//
+//		User user=userServiceImpl.findUserFromdbById(ll.getUser_id());
+//			System.out.println(user);
 
-		ll.setTemp_LL_no(llDetails.getTemp_LL_no());
-		ll.setRto(llDetails.getRto());
+		User user =userServiceImpl.findUserFromdbById(ll.getUser_id());
+		ll.setUser(user);
+		
+		ll.setTempLLNo(llDetails.getTempLLNo());
+//		ll.setRto(llDetails.getRto());
 		ll.setIssue_date(llDetails.getIssue_date());
 		ll.setExpiry_date(llDetails.getExpiry_date());
-		ll.setL_category(llDetails.getL_category());
+		ll.setStatus(llDetails.getStatus());
+		llServiceImpl.updateLl(ll.getTempLLNo(), ll.getIssue_date(), ll.getExpiry_date(), ll.getStatus(), ll.getId());
+		System.out.println(ll.getTempLLNo());
+		
 
-		LearningLicence updatedLl = llServiceImpl.saveLl(ll);
-		return ResponseEntity.ok(updatedLl);
+if (ll.getStatus().equalsIgnoreCase("Approved")) {
+			// if approved then sends the mail to the applicant
+			emailSenderService.sendSimpleEmail(user.getEmail(), "Dear " + user.getName() + ",\n\n"
+					+ "Congratulations, Your Learning Licence is Approved  .\n"
+					+ "You can Check status of it from RTO MANAGEMENT WEBSITE  and also Your Learning Licence will be delevered On registerd address.\n"
+					+ "\n" + "Warm Regards,\n" + "RTO Info Group,\n" + "\n" + "Thank You for Using our services",
+					"Your Learning Licence is approved");
+//					 emailSenderService.sendSimpleEmail("shubhamja3333@gmail.com", "This is the mail from Spring boot app", "spring email testing");
+		}
+		
+//		System.out.println(llServiceImpl.findBytempLLNo(ll.getTempLLNo()));
+//		LearningLicence updatedLl = llServiceImpl.saveLl(ll);
+		return ResponseEntity.ok(ll);
 	}
+	
+	
+	
 
 }

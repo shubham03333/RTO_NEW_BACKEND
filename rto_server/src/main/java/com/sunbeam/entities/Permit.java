@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "permit")
 public class Permit {
 
-	//permit_id | permit_no| registration_id| user_id| from_date| to_date| from_state| to_state| payment_id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "permit_id")
@@ -33,22 +32,29 @@ public class Permit {
 	private Date to_date;
 	private String from_state;
 	private String to_state;
-	private String status;
+	private String status="pending..";
+	private String registration_no;
+	private int registration_id;
+	private  int payment_id=5;
+	private int user_id;
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="registration_id")
+//	@JoinColumn(name="registration_id")
 	private VehicleRegistration vehicleRegistration;
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="payment_no")
+//	@JoinColumn(name="payment_no")
 	private Payment payment  ;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_id")
 	private User user ;
 
+	public Permit() {
+	}
 	
 
+
 	public Permit(int id, String permit_no, Date from_date, Date to_date, String from_state, String to_state,
-			String status, VehicleRegistration vehicleRegistration, Payment payment, User user) {
+			String status, String registration_no, int registration_id, int payment_id, int user_id,
+			VehicleRegistration vehicleRegistration, Payment payment, User user) {
 		super();
 		this.id = id;
 		this.permit_no = permit_no;
@@ -57,6 +63,10 @@ public class Permit {
 		this.from_state = from_state;
 		this.to_state = to_state;
 		this.status = status;
+		this.registration_no = registration_no;
+		this.registration_id = registration_id;
+		this.payment_id = payment_id;
+		this.user_id = user_id;
 		this.vehicleRegistration = vehicleRegistration;
 		this.payment = payment;
 		this.user = user;
@@ -184,11 +194,56 @@ public class Permit {
 
 
 
+	public String getRegistration_no() {
+		return registration_no;
+	}
+
+
+
+	public void setRegistration_no(String registration_no) {
+		this.registration_no = registration_no;
+	}
+
+
+
+	public int getRegistration_id() {
+		return registration_id;
+	}
+
+
+
+	public void setRegistration_id(int registration_id) {
+		this.registration_id = registration_id;
+	}
+
+
+
+	public int getPayment_id() {
+		return payment_id;
+	}
+	public void setPayment_id(int payment_id) {
+		this.payment_id = payment_id;
+	}
+	
+	
+	public int getUser_id() {
+		return user_id;
+	}
+
+
+
+	public void setUser_id(int user_id) {
+		this.user_id = user_id;
+	}
+
+
+
 	@Override
 	public String toString() {
 		return String.format(
-				"Permit [id=%s, permit_no=%s, from_date=%s, to_date=%s, from_state=%s, to_state=%s, status=%s, vehicleRegistration=%s, payment=%s, user=%s]",
-				id, permit_no, from_date, to_date, from_state, to_state, status, vehicleRegistration, payment, user);
+				"Permit [id=%s, permit_no=%s, from_date=%s, to_date=%s, from_state=%s, to_state=%s, status=%s, registration_no=%s, registration_id=%s, payment_id=%s, user_id=%s, vehicleRegistration=%s, payment=%s, user=%s]",
+				id, permit_no, from_date, to_date, from_state, to_state, status, registration_no, registration_id,
+				payment_id, user_id, vehicleRegistration, payment, user);
 	}
 
 

@@ -16,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "vehicle_transfer")
 public class VehicleTransfer {
 	
-//id|user_id|registration_id|new_owner|new_owner_aadhar|new_owner_email|new_owner_mobile|payment_id
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +27,11 @@ public class VehicleTransfer {
 
 	private String new_owner_email;
 	private long new_owner_mobile;
-	private String status;
+	private String status="pending..";
 	private  int payment_id=4;
+	private String registration_id;
+	private String registration_no;
+	private int user_id;
 	public String getTransfer_no() {
 		return transfer_no;
 	}
@@ -41,7 +43,6 @@ public class VehicleTransfer {
 	
 //	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "registration_id")
 	private VehicleRegistration vehicleRegistration1;
 	
 //	@JsonIgnore
@@ -53,20 +54,45 @@ public class VehicleTransfer {
 	public VehicleTransfer() {
 	}
 
+
+
 public VehicleTransfer(int id, String transfer_no, String new_owner, long new_owner_aadhar, String new_owner_email,
-		long new_owner_mobile, String status, int payment_id, VehicleRegistration vehicleRegistration1,
-		Payment payment) {
-	super();
-	this.id = id;
-	this.transfer_no = transfer_no;
-	this.new_owner = new_owner;
-	this.new_owner_aadhar = new_owner_aadhar;
-	this.new_owner_email = new_owner_email;
-	this.new_owner_mobile = new_owner_mobile;
-	this.status = status;
-	this.payment_id = payment_id;
-	this.vehicleRegistration1 = vehicleRegistration1;
-	this.payment = payment;
+			long new_owner_mobile, String status, int payment_id, String registration_id, String registration_no,
+			int user_id, VehicleRegistration vehicleRegistration1, Payment payment) {
+		super();
+		this.id = id;
+		this.transfer_no = transfer_no;
+		this.new_owner = new_owner;
+		this.new_owner_aadhar = new_owner_aadhar;
+		this.new_owner_email = new_owner_email;
+		this.new_owner_mobile = new_owner_mobile;
+		this.status = status;
+		this.payment_id = payment_id;
+		this.registration_id = registration_id;
+		this.registration_no = registration_no;
+		this.user_id = user_id;
+		this.vehicleRegistration1 = vehicleRegistration1;
+		this.payment = payment;
+	}
+
+
+
+
+
+public String getRegistration_no() {
+	return registration_no;
+}
+
+public void setRegistration_no(String registration_no) {
+	this.registration_no = registration_no;
+}
+
+public String getRegistration_id() {
+	return registration_id;
+}
+
+public void setRegistration_id(String registration_id) {
+	this.registration_id = registration_id;
 }
 
 public int getId() {
@@ -141,18 +167,25 @@ public void setPayment(Payment payment) {
 	this.payment = payment;
 }
 
+
+
+public int getUser_id() {
+	return user_id;
+}
+
+public void setUser_id(int user_id) {
+	this.user_id = user_id;
+}
+
 @Override
 public String toString() {
 	return String.format(
-			"VehicleTransfer [id=%s, transfer_no=%s, new_owner=%s, new_owner_aadhar=%s, new_owner_email=%s, new_owner_mobile=%s, status=%s, payment_id=%s, vehicleRegistration1=%s, payment=%s]",
+			"VehicleTransfer [id=%s, transfer_no=%s, new_owner=%s, new_owner_aadhar=%s, new_owner_email=%s, new_owner_mobile=%s, status=%s, payment_id=%s, registration_id=%s, registration_no=%s, user_id=%s, vehicleRegistration1=%s, payment=%s]",
 			id, transfer_no, new_owner, new_owner_aadhar, new_owner_email, new_owner_mobile, status, payment_id,
-			vehicleRegistration1, payment);
+			registration_id, registration_no, user_id, vehicleRegistration1, payment);
 }
-	
-	
 
-	
 
-	
+
 	
 }

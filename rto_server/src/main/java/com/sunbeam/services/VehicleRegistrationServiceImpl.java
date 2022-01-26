@@ -5,10 +5,12 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.sunbeam.daos.VehicleRegistrationDao;
 import com.sunbeam.entities.VehicleRegistration;
+import com.sunbeam.entities.VehicleTransfer;
 
 @Transactional
 @Service
@@ -29,11 +31,27 @@ public class VehicleRegistrationServiceImpl {
 	
 	public VehicleRegistration saveVehicleReg(VehicleRegistration vehicleRegistration) {
 		VehicleRegistration newVehicleReg=findBYId(vehicleRegistration.getId());
-		if(newVehicleReg != null)
+		if(newVehicleReg != null) {
+			
+//				if(findByregistration_no(vehicleRegistration.getRegistration_no())!=null) {
+//					return null;
+//				}
 			return null;
+		}
 		VehicleRegistration vehicleRegistration2=vehicleRegistrationDao.save(vehicleRegistration);
 		return vehicleRegistration;
 	}
+	
+	
+	
+	public void updateRc(String registration_no, int insurance_status,String status,int id)
+	{
+		vehicleRegistrationDao.updateRc(registration_no, insurance_status, status, id);
+	}
+	
+	
+	
+	
 	
 	public void deleteRC(VehicleRegistration RC) {
 		
@@ -41,9 +59,26 @@ public class VehicleRegistrationServiceImpl {
 	}
 	
 	public VehicleRegistration findByregistration_no(String reg_no) {
-		
-		int vehicle_id= vehicleRegistrationDao.findIdByregistration_no(reg_no);
+		int vehicle_id=0;
+		try {
+			
+		 vehicle_id= vehicleRegistrationDao.findIdByregistration_no(reg_no);
+		}
+		catch(DataIntegrityViolationException e) {
+			
+		}
 		VehicleRegistration vehiclereg=vehicleRegistrationDao.findByid(vehicle_id);
+		
 		return vehiclereg;
+	}
+	
+	
+	public VehicleRegistration findLLBYUserId(int user_id) {
+
+		int vrId = vehicleRegistrationDao.findIdByUserId(user_id);
+
+		VehicleRegistration vr =vehicleRegistrationDao.findByid(vrId);
+
+		return vr;
 	}
 }

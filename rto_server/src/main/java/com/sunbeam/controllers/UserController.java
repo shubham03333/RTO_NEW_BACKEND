@@ -87,7 +87,9 @@ public class UserController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> signUp(@RequestBody UserDTO userDto) {
+
 		UserDTO result = userService.saveUser(userDto);
+		System.out.println(result.getPassword());
 		return Response.success(result);
 	}
 
@@ -100,12 +102,12 @@ public class UserController {
 		userDto.setPhoto_id(this.fileName.getId());
 		fileName=null;
 		
-//		int userAadhar=userDao.findIdByaadhar_no(userDto.getAadhar_no());
+//		User userAadhar=userService.findByAadharNo(userDto.getAadhar_no());
 //		System.out.println(userAadhar);
-//		if(userAadhar<=0) {
+//		if(userAadhar==null) {
 //			return Response.error("User already exists");
 //		}
-//		_
+		
 		UserDTO result = userService.saveUser(userDto);
 		if(result==null)
 		{
@@ -121,7 +123,7 @@ public class UserController {
 			System.out.println(user1);
 			user1.setPassword(userDto.getPassword());
 			System.out.println(user1.getPassword());
-			this.updateUser(user.getId(), user1);
+			this.updateUserv1(user.getId(), user1);
 		}
 		return Response.success(result);
 	}
@@ -147,7 +149,7 @@ public class UserController {
 		}
 		
 		@PutMapping("/update/{id}")
-		public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User UserDetails){
+		public ResponseEntity<User> updateUserv1(@PathVariable int id, @RequestBody User UserDetails){
 			User user = userService.findUserFromdbById(id);
 			if(user==null) {
 				return (ResponseEntity<User>) Response.error("User not exist with id :"+id);
@@ -172,8 +174,10 @@ public class UserController {
 			User updatedUser = userService.saveUserdb(user);
 			return ResponseEntity.ok(updatedUser);
 		}
+		
+		
 		@PutMapping("/{id}")
-		public ResponseEntity<User> updateUser1(@PathVariable int id, @RequestBody User UserDetails){
+		public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User UserDetails){
 			User user = userService.findUserFromdbById(id);
 			if(user==null) {
 				return (ResponseEntity<User>) Response.error("User not exist with id :"+id);

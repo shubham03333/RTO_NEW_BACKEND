@@ -1,13 +1,11 @@
 package com.sunbeam.services;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import javax.persistence.SecondaryTable;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +16,7 @@ import com.sunbeam.dtos.DtoEntityConverter;
 import com.sunbeam.dtos.UserDTO;
 //import com.sunbeam.entities.Blog;
 import com.sunbeam.entities.User;
-import com.sunbeam.entities.VehicleRegistration;
+import com.sunbeam.exception.UniqueContraintExeption;
 
 @Transactional
 @Service
@@ -63,7 +61,7 @@ public class UserServiceImpl {
 
 	public UserDTO saveUser(UserDTO userDto) {
 		
-		
+			
 		User newUser=findUserFromdbByEmail(userDto.getEmail());
 		if(newUser != null) {
 			if(newUser.getAadhar_no()==null) {
@@ -79,8 +77,15 @@ public class UserServiceImpl {
 		String encPassword = passwordEncoder.encode(rawPassword);
 		userDto.setPassword(encPassword);
 		User user = converter.toUserEntity(userDto);
+		try { 
 		user = userDao.save(user);
 		userDto = converter.toUserDto(user);
+		return userDto;
+		}catch(DataIntegrityViolationException e) 
+		{
+//			new UniqueContraintExeption("Aadhar already exists");
+		}
+	
 //		userDto.setPassword("*******");
 		return userDto;
 		
@@ -111,8 +116,11 @@ public class UserServiceImpl {
 	}
 	public User findByAadharNo(String aadhar_no) {
 		
-		int user_id= userDao.findIdByaadhar_no(aadhar_no);
+		int user_id=userDao.findIdByaadhar_no(aadhar_no) ;
 		User user=userDao.findById(user_id);
+		if(user==null) {
+			return null;		
+		}
 		return user;
 	}
 	

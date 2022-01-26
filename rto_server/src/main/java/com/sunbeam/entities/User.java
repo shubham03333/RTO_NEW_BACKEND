@@ -1,5 +1,6 @@
 package com.sunbeam.entities;
 
+
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -13,13 +14,14 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 
 @Entity
-@Table(name = "users")
+@Table(name = "users",uniqueConstraints = @UniqueConstraint(name= "uaadhar_no",columnNames = {"aadhar_no"} ))
 public class User {
 	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

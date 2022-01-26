@@ -43,13 +43,14 @@ public class VehicleRegistration {
 	private int engine_capacity;
 	private int insurance_status;
 	private int puc_status;
-	private String hypothecated_to;
+	private String hypothecated_to="Nill";
 	private int wheels;
 	private int seat_capacity;
 	private long aadhar_no;
 	private  int payment_id=3;
-	private String status;
+	private String status="pending..";
 //	@JsonIgnore
+	private int user_id;
 //	@OneToOne(cascade = CascadeType.ALL)
 //	@JoinColumn(name = "aadhar_no")
 //	private  User user;
@@ -78,32 +79,49 @@ public class VehicleRegistration {
 	public VehicleRegistration() {
 	}
 
+
+
 public VehicleRegistration(int id, String registration_no, String owner, String make, String chassis_no,
-		String vehicle_class, Date purchase_date, String fuel_type, String engine_no, int engine_capacity,
-		int insurance_status, int puc_status, String hypothecated_to, int wheels, int seat_capacity, long aadhar_no,
-		int payment_id, String status, VehicleTransfer vehicletransfer, List<Permit> permitList) {
-	super();
-	this.id = id;
-	this.registration_no = registration_no;
-	this.owner = owner;
-	this.make = make;
-	this.chassis_no = chassis_no;
-	this.vehicle_class = vehicle_class;
-	this.purchase_date = purchase_date;
-	this.fuel_type = fuel_type;
-	this.engine_no = engine_no;
-	this.engine_capacity = engine_capacity;
-	this.insurance_status = insurance_status;
-	this.puc_status = puc_status;
-	this.hypothecated_to = hypothecated_to;
-	this.wheels = wheels;
-	this.seat_capacity = seat_capacity;
-	this.aadhar_no = aadhar_no;
-	this.payment_id = payment_id;
-	this.status = status;
-	this.vehicletransfer = vehicletransfer;
-	this.permitList = permitList;
+			String vehicle_class, Date purchase_date, String fuel_type, String engine_no, int engine_capacity,
+			int insurance_status, int puc_status, String hypothecated_to, int wheels, int seat_capacity, long aadhar_no,
+			int payment_id, String status, int user_id, VehicleTransfer vehicletransfer, List<Permit> permitList) {
+		super();
+		this.id = id;
+		this.registration_no = registration_no;
+		this.owner = owner;
+		this.make = make;
+		this.chassis_no = chassis_no;
+		this.vehicle_class = vehicle_class;
+		this.purchase_date = purchase_date;
+		this.fuel_type = fuel_type;
+		this.engine_no = engine_no;
+		this.engine_capacity = engine_capacity;
+		this.insurance_status = insurance_status;
+		this.puc_status = puc_status;
+		this.hypothecated_to = hypothecated_to;
+		this.wheels = wheels;
+		this.seat_capacity = seat_capacity;
+		this.aadhar_no = aadhar_no;
+		this.payment_id = payment_id;
+		this.status = status;
+		this.user_id = user_id;
+		this.vehicletransfer = vehicletransfer;
+		this.permitList = permitList;
+	}
+
+
+
+public int getUser_id() {
+	return user_id;
 }
+
+
+
+public void setUser_id(int user_id) {
+	this.user_id = user_id;
+}
+
+
 
 public int getId() {
 	return id;
@@ -265,15 +283,16 @@ public void setPermitList(List<Permit> permitList) {
 	this.permitList = permitList;
 }
 
+
+
 @Override
 public String toString() {
 	return String.format(
-			"VehicleRegistration [id=%s, registration_no=%s, owner=%s, make=%s, chassis_no=%s, vehicle_class=%s, purchase_date=%s, fuel_type=%s, engine_no=%s, engine_capacity=%s, insurance_status=%s, puc_status=%s, hypothecated_to=%s, wheels=%s, seat_capacity=%s, aadhar_no=%s, payment_id=%s, status=%s, vehicletransfer=%s, permitList=%s]",
+			"VehicleRegistration [id=%s, registration_no=%s, owner=%s, make=%s, chassis_no=%s, vehicle_class=%s, purchase_date=%s, fuel_type=%s, engine_no=%s, engine_capacity=%s, insurance_status=%s, puc_status=%s, hypothecated_to=%s, wheels=%s, seat_capacity=%s, aadhar_no=%s, payment_id=%s, status=%s, user_id=%s, vehicletransfer=%s, permitList=%s]",
 			id, registration_no, owner, make, chassis_no, vehicle_class, purchase_date, fuel_type, engine_no,
 			engine_capacity, insurance_status, puc_status, hypothecated_to, wheels, seat_capacity, aadhar_no,
-			payment_id, status, vehicletransfer, permitList);
+			payment_id, status, user_id, vehicletransfer, permitList);
 }
-
 
 
 

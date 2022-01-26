@@ -7,7 +7,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.sunbeam.entities.Permit;
-
+import com.sunbeam.entities.Puc;
+import com.sunbeam.entities.VehicleRegistration;
 import com.sunbeam.daos.PermitDao;
 
 @Transactional
@@ -16,6 +17,8 @@ public class PermitServiceImpl {
 
 	@Autowired
 	PermitDao permitDao;
+	@Autowired
+	VehicleRegistrationServiceImpl vehicleRegistrationServiceImpl;
 
 	public Permit findBYId(int permit_id) {
 		Permit permit = permitDao.findByid(permit_id);
@@ -32,7 +35,24 @@ public class PermitServiceImpl {
 		if (newPermit != null)
 			return null;
 		Permit permit2 = permitDao.save(permit);
-		return permit;
+		return permit2;
 	}
 
+	public void updatePermit(String registration_no,String status,int id) {
+		permitDao.updatePermit(registration_no, status, id);
+	}
+	
+	public VehicleRegistration findVRegistrationByRegId(int regId) {
+		
+		return vehicleRegistrationServiceImpl.findBYId(regId);
+	}
+	public Permit findLLBYUserId(int user_id) {
+
+		int pId = permitDao.findIdByUserId(user_id);
+
+		Permit p =permitDao.findByid(pId);
+		return p;
+	
+	}
+	
 }

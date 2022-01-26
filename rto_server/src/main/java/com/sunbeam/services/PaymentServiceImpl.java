@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.sunbeam.daos.PaymentDao;
 import com.sunbeam.entities.Payment;
+import com.sunbeam.entities.Permit;
 
 @Transactional
 @Service
@@ -17,8 +18,8 @@ public class PaymentServiceImpl {
 	@Autowired
 	PaymentDao paymentDao;
 
-	public Payment findBYId(int payment_refno) {
-		Payment payment = paymentDao.findById(payment_refno);
+	public Payment findBYId(int transaction_no) {
+		Payment payment = paymentDao.findById(transaction_no);
 		return payment;
 	}
 
@@ -34,10 +35,19 @@ public class PaymentServiceImpl {
 //			return null;
 		if (newPayment != null)
 			return null;
-		
+
 		Payment payment2 = paymentDao.save(payment);
 		return payment2;
-		
+
+	}
+
+	public Payment findLLBYUserId(int user_id) {
+
+		int pId = paymentDao.findIdByUserId(user_id);
+
+		Payment p = paymentDao.findById(pId);
+		return p;
+
 	}
 
 }
