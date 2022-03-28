@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sunbeam.daos.VehicleRegistrationDao;
 import com.sunbeam.dtos.Response;
 import com.sunbeam.entities.User;
 import com.sunbeam.entities.VehicleRegistration;
