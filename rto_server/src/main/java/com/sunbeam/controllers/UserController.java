@@ -45,17 +45,24 @@ public class UserController {
 	private UserDao userDao;
 	
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+//	@Autowired
+//	private PasswordEncoder passwordEncoder;
+	
+
 	
 	@Autowired
 	    private DatabaseFileService fileStorageService;
 	
-	User user;
 	@Autowired
 	DtoEntityConverter converter;
 	
 	DatabaseFile fileName;
+	 @Autowired
+	 DatabaseFileRepository databaseFileRepository;
+
+	 	User user;
+		
+		DatabaseFile databaseFile;
 
 	 @PostMapping("/uploadFile")
 	    public Responsef uploadFile(@RequestParam("file") MultipartFile file) {
@@ -70,11 +77,7 @@ public class UserController {
 	        return new Responsef(fileName.getFileName(), fileDownloadUri,
 	                file.getContentType(), file.getSize());
 	    }
- @Autowired
- DatabaseFileRepository databaseFileRepository;
 
-	
-	DatabaseFile databaseFile;
 	
 	@PostMapping("/signin")
 	public ResponseEntity<?> signIn(@Valid @RequestBody Credentials cred) {
@@ -107,10 +110,15 @@ public class UserController {
 //		if(userAadhar==null) {
 //			return Response.error("User already exists");
 //		}
-		
+		if(userDto.getAadhar_no().length()!=12)
+		{
+//			databaseFileRepository.deletePhoto(this.fileName.getId());
+			return Response.error("Enter valid Aadhar Number");
+		}
 		UserDTO result = userService.saveUser(userDto);
 		if(result==null)
-		{
+		{	
+//			databaseFileRepository.deletePhoto(this.fileName.getId());
 			
 			return Response.error("Email already exists try to enter different Email");
 		}
@@ -138,15 +146,29 @@ public class UserController {
 	}
 	
 	// get user by id rest api
-		@GetMapping("/{id}")
-		public ResponseEntity<User> getUserById(@PathVariable int id) {
-			User user = userService.findUserFromdbById(id);
-					if(user==null) {
-						return (ResponseEntity<User>) Response.error("User not exist with id :"+id);
-					}
-//					.orElseThrow(() -> new ResourceNotFoundException("User not exist with id :" + id));
-			return ResponseEntity.ok(user);
-		}
+//		@GetMapping("/{id}")
+//		public ResponseEntity<User> getUserById(@PathVariable int id) {
+//			User user = userService.findUserFromdbById(id);
+//			user.setCount(userDao.userCount());
+//					if(user==null) {
+//						return (ResponseEntity<User>) Response.error("User not exist with id :"+id);
+//					}
+////					.orElseThrow(() -> new ResourceNotFoundException("User not exist with id :" + id));
+//			return ResponseEntity.ok(user);
+//		}
+	
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<UserDTO> getUserById(@PathVariable int id) {
+		UserDTO user = userService.findUserById(id);
+		user.setCount(userDao.userCount());
+				if(user==null) {
+					return (ResponseEntity<UserDTO>) Response.error("User not exist with id :"+id);
+				}
+//				.orElseThrow(() -> new ResourceNotFoundException("User not exist with id :" + id));
+		return ResponseEntity.ok(user);
+	}
+	
 		
 		@PutMapping("/update/{id}")
 		public ResponseEntity<User> updateUserv1(@PathVariable int id, @RequestBody User UserDetails){

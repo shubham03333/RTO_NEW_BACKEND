@@ -36,7 +36,7 @@ public class EmailSenderServiceImpl implements IEmailSenderService {
 	
 	MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(mimeMessage,true);
 	
-	mimeMessageHelper.setFrom("ssjtechs@gmail.com");
+	mimeMessageHelper.setFrom("rto.management.info@gmail.com");
 	mimeMessageHelper.setTo(toEmail);
 	mimeMessageHelper.setSubject(subject);
 	mimeMessageHelper.setText(body);

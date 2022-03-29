@@ -18,17 +18,21 @@ public class DatabaseFile {
 
 	private String fileType;
 	
-	@OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-	private User user;
+	
+	//############ Working #########
+//	@OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+//	private User user;
+//
+//	public User getUser() {
+//		return user;
+//	}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-//		user.setDatabaseFile(this);
-	}
+//	public void setUser(User user) {
+//		this.user = user;
+////		user.setDatabaseFile(this);
+//	}
+	
+	//############ Working #########
 
 	@Lob
 	private byte[] data;

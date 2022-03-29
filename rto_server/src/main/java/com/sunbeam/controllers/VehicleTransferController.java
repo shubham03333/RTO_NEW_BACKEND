@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sunbeam.daos.VehicleTransferDao;
 import com.sunbeam.dtos.Response;
+import com.sunbeam.dtos.VehicleTransferDTO;
 import com.sunbeam.entities.User;
+import com.sunbeam.entities.VehicleRegistration;
 import com.sunbeam.entities.VehicleTransfer;
 import com.sunbeam.services.EmailSenderServiceImpl;
 import com.sunbeam.services.UserServiceImpl;
@@ -32,6 +34,7 @@ import com.sunbeam.services.VehicleTransferServiceImpl;
 @RestController
 @RequestMapping("/vehicle_transfer/")
 public class VehicleTransferController {
+
 	@Autowired
 	private VehicleTransferDao transferDao;
 
@@ -67,8 +70,8 @@ public class VehicleTransferController {
 		return ResponseEntity.ok(vehicleTransfer);
 	}
 
-	@GetMapping("/byUserId/{id}")
-	public ResponseEntity<VehicleTransfer> getVehicleTransferById1(@PathVariable int id) {
+	@GetMapping("/byUserId1/{id}")
+	public ResponseEntity<VehicleTransfer> getVehicleTransferById11(@PathVariable int id) {
 
 		VehicleTransfer vt = vehicleTransferServiceImpl.findLLBYUserId(id);
 		System.out.println(vt);
@@ -77,6 +80,40 @@ public class VehicleTransferController {
 		}
 //				.orElseThrow(() -> new ResourceNotFoundException("DrivingLicence not exist with temp_ll_id :" + id));
 		return ResponseEntity.ok(vt);
+	}
+
+	// ############################################## UNDER TESTING
+	// ###############################################
+
+	@GetMapping("/byUserId/{id}")
+	public ResponseEntity<VehicleTransferDTO> getVehicleTransferById1(@PathVariable int id) {
+
+		VehicleTransferDTO vehicleTransfer = new VehicleTransferDTO();
+
+		System.out.println(transferDao.pendingCountInVt());
+
+		if (transferDao.pendingCountInVt() != null) {
+			vehicleTransfer.setPendingCount(transferDao.pendingCountInVt());
+		}
+
+		return ResponseEntity.ok(vehicleTransfer);
+	}
+
+	// ############################################## UNDER TESTING
+	// ###############################################
+
+	@GetMapping("/rcNo/{RcNo}")
+	public ResponseEntity<VehicleTransfer> getVtransferStatusByRcNo(@PathVariable String RcNo) {
+		try {
+			int vt = transferDao.findIdByregistration_no(RcNo);
+			System.out.println(vt);
+			VehicleTransfer vehicleTrnf = vehicleTransferServiceImpl.findById(vt);
+
+			return ResponseEntity.ok(vehicleTrnf);
+		} catch (Exception e) {
+			return (ResponseEntity<VehicleTransfer>) Response.error("RC not exist with registration number");
+		}
+
 	}
 
 	@PostMapping("/add_vehicleTransfer")
@@ -115,8 +152,10 @@ public class VehicleTransferController {
 		User user = userServiceImpl.findUserFromdbById(transfer.getUser_id());
 		System.out.println(user);
 		transfer.setStatus(transferDetails.getStatus());
+		transfer.setTransfer_no(transferDetails.getTransfer_no());
 
 		vehicleTransferServiceImpl.updateVTransfer(transfer.getStatus(), transfer.getId());
+		transfer.setTransfer_no(transferDetails.getTransfer_no());
 		// EMAIL SERVICE
 		if (transfer.getStatus().equalsIgnoreCase("Approved")) {
 			// if approved then sends the mail to the applicant

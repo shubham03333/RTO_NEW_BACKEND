@@ -44,5 +44,4 @@ public class Responsef {
     public void setSize(long size) {
         this.size = size;
     }
- 
 }
