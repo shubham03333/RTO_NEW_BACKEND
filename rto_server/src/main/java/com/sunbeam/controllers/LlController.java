@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sunbeam.daos.LlDao;
-import com.sunbeam.dtos.LearningLicenceDTO;
 import com.sunbeam.dtos.Response;
-import com.sunbeam.entities.DrivingLicence;
 import com.sunbeam.entities.LearningLicence;
 import com.sunbeam.entities.User;
 import com.sunbeam.services.EmailSenderServiceImpl;
@@ -47,7 +45,6 @@ public class LlController {
 	private EmailSenderServiceImpl emailSenderService;
 	
 
-	
 	@GetMapping("/search")
 	public ResponseEntity<?> findLl() {
 		List<LearningLicence> result = new ArrayList<>();
@@ -65,45 +62,18 @@ public class LlController {
 		return ResponseEntity.ok(ll);
 	}
 	
-	@GetMapping("/byUserId1/{id}")
-	public ResponseEntity<LearningLicence> getLearningLicenceByUserId(@PathVariable int id) {
-		try {
-			
-			LearningLicence ll = llServiceImpl.findLLBYUserId(id);
-			System.out.println(ll);
-			if (ll == null) {
-				return (ResponseEntity<LearningLicence>) Response.error("LearningLicence not exist with temp_ll_id :" + id);
-			}
-//					.orElseThrow(() -> new ResourceNotFoundException("DrivingLicence not exist with temp_ll_id :" + id));
-			return ResponseEntity.ok(ll);
-		
-
-			
-		} catch (Exception e) {
-			return (ResponseEntity<LearningLicence>) Response.error("You have not applied for LL Yet !");
-		}
-		
-	
-	}
-
 	@GetMapping("/byUserId/{id}")
-	public ResponseEntity<LearningLicenceDTO> getLearningById1(@PathVariable int id) {
+	public ResponseEntity<LearningLicence> getLearningLicenceByUserId(@PathVariable int id) {
 		
-	
-		LearningLicenceDTO learningLicence=new LearningLicenceDTO();
-		
-		System.out.println(llDao.pendingCountInLl());
-		
-		if(llDao.pendingCountInLl()!=null) {
-			learningLicence.setPendingCount(llDao.pendingCountInLl());
+		LearningLicence ll = llServiceImpl.findLLBYUserId(id);
+		System.out.println(ll);
+		if (ll == null) {
+			return (ResponseEntity<LearningLicence>) Response.error("LearningLicence not exist with temp_ll_id :" + id);
 		}
-
-		return ResponseEntity.ok(learningLicence);
+//				.orElseThrow(() -> new ResourceNotFoundException("DrivingLicence not exist with temp_ll_id :" + id));
+		return ResponseEntity.ok(ll);
 	}
 
-	
-	
-	
 	@PostMapping("/add_ll")
 	public ResponseEntity<?> addRc(@RequestBody LearningLicence learningLicence) {
 		LearningLicence ll = llServiceImpl.saveLl(learningLicence);

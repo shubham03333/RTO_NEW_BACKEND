@@ -40,14 +40,14 @@ public class Puc {
 	private String registration_no;
 	private int registration_id;
 	private String aadhar_no;
-	private String status="Pending";
+	private String status="pending..";
 	private  int payment_id=6;
 	
 	private int user_id;
-//	@JsonIgnore
-//	@ManyToOne(cascade = CascadeType.ALL)
-////	@JoinColumn(name = "user_id")
-//	private User user ;
+	@JsonIgnore
+	@ManyToOne(cascade = CascadeType.ALL)
+//	@JoinColumn(name = "user_id")
+	private User user ;
 	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	private VehicleRegistration vehicleRegistration ;
@@ -55,37 +55,20 @@ public class Puc {
 	
 	
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "transaction_no")
+//	@JoinColumn(name = "payment_no")
 	private Payment payment;
 
 	
 	public Puc() {
 	}
-//	public Puc(int id, String puc_no, Date from_date, Date to_date, float co2, float hc, String registration_no,
-//			int registration_id, String aadhar_no, String status, int payment_id, int user_id, User user,
-//			VehicleRegistration vehicleRegistration, Payment payment) {
-//		this.id = id;
-//		this.puc_no = puc_no;
-//		this.from_date = from_date;
-//		this.to_date = to_date;
-//		this.co2 = co2;
-//		this.hc = hc;
-//		this.registration_no = registration_no;
-//		this.registration_id = registration_id;
-//		this.aadhar_no = aadhar_no;
-//		this.status = status;
-//		this.payment_id = payment_id;
-//		this.user_id = user_id;
-//		this.user = user;
-//		this.vehicleRegistration = vehicleRegistration;
-//		this.payment = payment;
-//	}
 
 
+	
 
 	public Puc(int id, String puc_no, Date from_date, Date to_date, float co2, float hc, String registration_no,
-			int registration_id, String aadhar_no, String status, int payment_id, int user_id,
+			int registration_id, String aadhar_no, String status, int payment_id, int user_id, User user,
 			VehicleRegistration vehicleRegistration, Payment payment) {
+		super();
 		this.id = id;
 		this.puc_no = puc_no;
 		this.from_date = from_date;
@@ -98,9 +81,13 @@ public class Puc {
 		this.status = status;
 		this.payment_id = payment_id;
 		this.user_id = user_id;
+		this.user = user;
 		this.vehicleRegistration = vehicleRegistration;
 		this.payment = payment;
 	}
+
+
+
 
 	public int getId() {
 		return id;
@@ -202,14 +189,14 @@ public class Puc {
 	}
 
 
-//	public User getUser() {
-//		return user;
-//	}
-//
-//
-//	public void setUser(User user) {
-//		this.user = user;
-//	}
+	public User getUser() {
+		return user;
+	}
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 
 	public VehicleRegistration getVehicleRegistration() {
@@ -256,31 +243,18 @@ public class Puc {
 
 
 
-
-
-
 	@Override
 	public String toString() {
 		return String.format(
-				"Puc [id=%s, puc_no=%s, from_date=%s, to_date=%s, co2=%s, hc=%s, registration_no=%s, registration_id=%s, aadhar_no=%s, status=%s, payment_id=%s, user_id=%s, vehicleRegistration=%s, payment=%s]",
+				"Puc [id=%s, puc_no=%s, from_date=%s, to_date=%s, co2=%s, hc=%s, registration_no=%s, registration_id=%s, aadhar_no=%s, status=%s, payment_id=%s, user_id=%s, user=%s, vehicleRegistration=%s, payment=%s]",
 				id, puc_no, from_date, to_date, co2, hc, registration_no, registration_id, aadhar_no, status,
-				payment_id, user_id, vehicleRegistration, payment);
+				payment_id, user_id, user, vehicleRegistration, payment);
 	}
 
 
 
 
-//	@Override
-//	public String toString() {
-//		return String.format(
-//				"Puc [id=%s, puc_no=%s, from_date=%s, to_date=%s, co2=%s, hc=%s, registration_no=%s, registration_id=%s, aadhar_no=%s, status=%s, payment_id=%s, user_id=%s, user=%s, vehicleRegistration=%s, payment=%s]",
-//				id, puc_no, from_date, to_date, co2, hc, registration_no, registration_id, aadhar_no, status,
-//				payment_id, user_id, user, vehicleRegistration, payment);
-//	}
-
-
-
-
-
+	
+	
 
 }

@@ -20,12 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sunbeam.daos.PucDao;
-import com.sunbeam.dtos.PUCDTO;
 import com.sunbeam.dtos.Response;
-import com.sunbeam.entities.Permit;
 import com.sunbeam.entities.Puc;
 import com.sunbeam.entities.User;
-import com.sunbeam.entities.VehicleTransfer;
 import com.sunbeam.services.EmailSenderServiceImpl;
 import com.sunbeam.services.PucServiceImpl;
 import com.sunbeam.services.UserServiceImpl;
@@ -70,11 +67,10 @@ public class PucController {
 		return ResponseEntity.ok(puc);
 	}
 
-	@GetMapping("/byUserId1/{id}")
-	public ResponseEntity<Puc> getPucById11(@PathVariable int id) {
+	@GetMapping("/byUserId/{id}")
+	public ResponseEntity<Puc> getPucById1(@PathVariable int id) {
 
 		Puc p = pucServiceImpl.findLLBYUserId(id);
-	
 		System.out.println(p);
 		if (p == null) {
 			return (ResponseEntity<Puc>) Response.error("Puc not exist with puc_user_id :" + id);
@@ -83,42 +79,6 @@ public class PucController {
 		return ResponseEntity.ok(p);
 	}
 
-
-	//############################################## UNDER TESTING ###############################################
-	
-	@GetMapping("/byUserId/{id}")
-	public ResponseEntity<PUCDTO> getPucById1(@PathVariable int id) {
-		
-	
-		PUCDTO p=new PUCDTO();
-		p.setCount(pucDao.pucCount());
-		System.out.println(p.getCount());
-		System.out.println(pucDao.pendingCountInPuc());
-		
-		if(pucDao.pendingCountInPuc()!=null) {
-			p.setPendingCount(pucDao.pendingCountInPuc());
-		}
-
-		return ResponseEntity.ok(p);
-	}
-
-	//############################################## UNDER TESTING ###############################################
-	
-	
-	@GetMapping("/rcNo/{RcNo}")
-	public ResponseEntity<Puc> getPucStatusByRcNo(@PathVariable String RcNo) {
-		try {
-			int p = pucDao.findIdByregistration_no(RcNo);
-			System.out.println(p);
-			Puc preg = pucServiceImpl.findBYId(p);
-
-			return ResponseEntity.ok(preg);
-		} catch (Exception e) {
-			return (ResponseEntity<Puc>) Response.error("RC not exist with registration number");
-		}
-
-	}
-	
 	@PostMapping("/add_puc")
 	public ResponseEntity<?> addPuc(@RequestBody Puc pollutionControl) {
 

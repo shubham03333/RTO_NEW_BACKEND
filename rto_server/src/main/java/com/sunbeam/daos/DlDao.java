@@ -16,12 +16,6 @@ public interface DlDao extends JpaRepository<DrivingLicence,Integer> {
 	
 	@Modifying
 	@Query("UPDATE DrivingLicence dl SET dl.dl_no=?1, dl.dl_issue_date=?2,dl.dl_expiry_date=?3,dl.status=?4  WHERE dl.id=?5")
-	public void updateDl(String  tempLLNo, Date issue_date,Date expiry_date,String status,int id);
-	
-	@Query("select count(*) from DrivingLicence dl WHERE dl.status = 'Pending'")
-	Integer pendingCountInDl();
+	public void updateDl(int  tempLLNo, Date issue_date,Date expiry_date,String status,int id);
 
-
-	 @Query("select count(*) from DrivingLicence dl")
-				Integer dLCount();
 }

@@ -18,10 +18,4 @@ public interface PermitDao extends JpaRepository<Permit, Integer> {
 		@Query("UPDATE Permit p SET p.permit_no=?1, p.status=?2  WHERE p.id=?3")
 		public void updatePermit(String registration_no,String status,int id);
 	 
-	 @Query("select count(*) from Permit p WHERE p.status = 'Pending'")
-		Integer pendingCountInPermit();
-	 
-	 @Query ("select p.id from Permit p WHERE p.registration_no = ?1")
-	  int findIdByregistration_no(String id);
-	 
 }

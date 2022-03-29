@@ -20,12 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sunbeam.daos.PermitDao;
-import com.sunbeam.dtos.PermitDTO;
 import com.sunbeam.dtos.Response;
 import com.sunbeam.entities.Permit;
-import com.sunbeam.entities.Puc;
 import com.sunbeam.entities.User;
-import com.sunbeam.entities.VehicleTransfer;
 import com.sunbeam.services.EmailSenderServiceImpl;
 import com.sunbeam.services.PermitServiceImpl;
 import com.sunbeam.services.UserServiceImpl;
@@ -65,8 +62,8 @@ public class PermitController {
 		return ResponseEntity.ok(permit);
 	}
 	
-	@GetMapping("/byUserId1/{id}")
-	public ResponseEntity<Permit> getPermitById11(@PathVariable int id) {
+	@GetMapping("/byUserId/{id}")
+	public ResponseEntity<Permit> getPermitById1(@PathVariable int id) {
 		
 		Permit p = permitServiceImpl.findLLBYUserId(id);
 		System.out.println(p);
@@ -77,41 +74,6 @@ public class PermitController {
 		return ResponseEntity.ok(p);
 	}
 
-	//############################################## UNDER TESTING ###############################################
-	
-	@GetMapping("/byUserId/{id}")
-	public ResponseEntity<PermitDTO> getPermitById1(@PathVariable int id) {
-		
-	
-		PermitDTO p=new PermitDTO();
-		
-		System.out.println(permitDao.pendingCountInPermit());
-		
-		if(permitDao.pendingCountInPermit()!=null) {
-			p.setPendingCount(permitDao.pendingCountInPermit());
-		}
-
-		return ResponseEntity.ok(p);
-	}
-
-	//############################################## UNDER TESTING ###############################################
-	
-	
-	@GetMapping("/rcNo/{RcNo}")
-	public ResponseEntity<Permit> getPermitStatusByRcNo(@PathVariable String RcNo) {
-		try {
-			int p = permitDao.findIdByregistration_no(RcNo);
-			System.out.println(p);
-			Permit preg = permitServiceImpl.findBYId(p);
-
-			return ResponseEntity.ok(preg);
-		} catch (Exception e) {
-			return (ResponseEntity<Permit>) Response.error("RC not exist with registration number");
-		}
-
-	}
-	
-	
 	@PostMapping("/add_permit")
 	public ResponseEntity<?> addPermit(@RequestBody Permit permit) {
 		Permit permission = permitServiceImpl.savePermit(permit);

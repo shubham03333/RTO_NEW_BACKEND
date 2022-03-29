@@ -2,7 +2,6 @@ package com.sunbeam.services;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -39,12 +38,11 @@ public class DlServiceImpl {
 		if (newDl != null)
 			return null;
 		dl.setUser(userServiceImpl.findUserFromdbById(dl.getUser_id()));
-		System.out.println(dl.getUser());
 		DrivingLicence dl2 = dlDao.save(dl);
-		return dl2;
+		return dl;
 	}
 
-	public void updateDl(String tempLLNo, Date issue_date, Date expiry_date, String status, int id) {
+	public void updateDl(int tempLLNo, Date issue_date, Date expiry_date, String status, int id) {
 		try {
 
 			dlDao.updateDl(tempLLNo, issue_date, expiry_date, status, id);
@@ -53,20 +51,12 @@ public class DlServiceImpl {
 		}
 	}
 
-	public Optional<DrivingLicence> findLLBYUserId(int user_id) {
+	public DrivingLicence findLLBYUserId(int user_id) {
 
-		Integer dId = dlDao.findIdByUserId(user_id);
-		
-		Optional<DrivingLicence> dl=null;
-		try {
-			if(dId!=null)
-			 dl = dlDao.findById(dId);
-			if (dl == null)
-				return null;
-			return dl;
-		} catch (Exception e) {
-			
-		}
+		int dId = dlDao.findIdByUserId(user_id);
+
+		DrivingLicence dl = dlDao.findById(dId);
+
 		return dl;
 	}
 

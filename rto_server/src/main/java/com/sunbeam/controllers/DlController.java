@@ -1,12 +1,9 @@
 package com.sunbeam.controllers;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 import javax.mail.MessagingException;
 
@@ -23,16 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sunbeam.daos.DlDao;
-import com.sunbeam.daos.LlDao;
-import com.sunbeam.dtos.DrivingLicenceDTO;
 import com.sunbeam.dtos.Response;
 import com.sunbeam.entities.DrivingLicence;
-import com.sunbeam.entities.LearningLicence;
-import com.sunbeam.entities.Payment;
 import com.sunbeam.entities.User;
 import com.sunbeam.services.DlServiceImpl;
 import com.sunbeam.services.EmailSenderServiceImpl;
-import com.sunbeam.services.LlServiceImpl;
 import com.sunbeam.services.UserServiceImpl;
 
 @CrossOrigin(origins = "*")
@@ -46,8 +38,6 @@ public class DlController {
 	@Autowired
 	private DlServiceImpl dlServiceImpl;
 
-	@Autowired
-	private LlDao llDao;
 	
 	@Autowired
 	private UserServiceImpl userServiceImpl;
@@ -55,8 +45,6 @@ public class DlController {
 	@Autowired
 	private EmailSenderServiceImpl emailSenderService;
 	
-	@Autowired
-	private LlServiceImpl llServiceImpl;
 	
 	
 	@GetMapping("/search")
@@ -69,93 +57,31 @@ public class DlController {
 	@GetMapping("/{id}")
 	public ResponseEntity<DrivingLicence> getDrivingLicenceById(@PathVariable int id) {
 		DrivingLicence dl = dlServiceImpl.findBYId(id);
-
 		if (dl == null) {
 			return (ResponseEntity<DrivingLicence>) Response.error("DrivingLicence not exist with dl_id :" + id);
 		}
 //				.orElseThrow(() -> new ResourceNotFoundException("DrivingLicence not exist with dl_id :" + id));
 		return ResponseEntity.ok(dl);
 	}
-	
-	
-	@GetMapping("/byUserId1/{id}")
-	public ResponseEntity<Optional<DrivingLicence>> getLearningLicenceByUserId(@PathVariable int id) {
-		
-		
-		try {
-			Optional<DrivingLicence> dl = dlServiceImpl.findLLBYUserId(id);
-			
-
-			System.out.println(dl);
-			if (dl == null) {
-				return (ResponseEntity<Optional<DrivingLicence>>) Response.error("LearningLicence not exist with temp_ll_id :" + id);
-			}
-//					.orElseThrow(() -> new ResourceNotFoundException("DrivingLicence not exist with temp_ll_id :" + id));
-			return ResponseEntity.ok(dl);
-		}catch(Exception e) {
-			return (ResponseEntity<Optional<DrivingLicence>>) Response.error("LearningLicence not exist with");
-		}
-	
-	}
-	
-	//############################################## UNDER TESTING ###############################################
-	
 	@GetMapping("/byUserId/{id}")
-	public ResponseEntity<DrivingLicenceDTO> getDrivingLicenceById1(@PathVariable int id) {
+	public ResponseEntity<DrivingLicence> getDrivingLicenceById1(@PathVariable int id) {
 		
-	
-//		DrivingLicence drivingLicence=new DrivingLicence();
-		
-		
-		DrivingLicenceDTO drivingLicence=new DrivingLicenceDTO();
-		
-		System.out.println(dlDao.pendingCountInDl());
-		
-		drivingLicence.setCount(dlDao.dLCount());
-		
-		System.out.println(drivingLicence.getCount());
-		
-		if(dlDao.pendingCountInDl()!=null) {
-			
-			drivingLicence.setPendingCount(dlDao.pendingCountInDl());
+		DrivingLicence dl = dlServiceImpl.findLLBYUserId(id);
+		System.out.println(dl);
+		if (dl == null) {
+			return (ResponseEntity<DrivingLicence>) Response.error("DrivingLicence not exist with dl_Userid  :" + id);
 		}
-
-		return ResponseEntity.ok(drivingLicence);
+//				.orElseThrow(() -> new ResourceNotFoundException("DrivingLicence not exist with temp_ll_id :" + id));
+		return ResponseEntity.ok(dl);
 	}
 
-	//############################################## UNDER TESTING ###############################################
-	
-	
-	
-	
-	
 	@PostMapping("/add_dl")
 	public ResponseEntity<?> addRc(@RequestBody DrivingLicence drivingLicence) {
-		
-		try {
-			int llid=llDao.findIdByLLNo(drivingLicence.getTempLLNo());
-			
-			LearningLicence ll = llServiceImpl.findBYId(llid);
-			
-			if(ll != null) {
-				
-				DrivingLicence dl = dlServiceImpl.saveDl(drivingLicence);
-				dl.setLearningLicence(ll);
-//				System.out.println(result);
-				if (dl == null)
-					return Response.error("DrivingLicence is empty");
-				
-				return Response.success(dl);
-			}
-		} catch (Exception e) {
-			
-			return (ResponseEntity<Optional<DrivingLicence>>) Response.error("Please Apply for Learning Licnce first and then Apply for DL" );
-			
-		}
-		return Response.error("DrivingLicence is empty") ;
-		
-		
-
+		DrivingLicence dl = dlServiceImpl.saveDl(drivingLicence);
+//		System.out.println(result);
+		if (dl == null)
+			return Response.error("DrivingLicence is empty");
+		return Response.success(dl);
 	}
 
 	@DeleteMapping("/{id}")

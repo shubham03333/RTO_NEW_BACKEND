@@ -21,9 +21,4 @@ public interface LlDao extends JpaRepository<LearningLicence,Integer> {
 	@Query("UPDATE LearningLicence ll SET ll.tempLLNo=?1, ll.issue_date=?2,ll.expiry_date=?3,ll.status=?4  WHERE ll.id=?5")
 	public void updateLl(int  tempLLNo, Date issue_date,Date expiry_date,String status,int id);
 
-	@Query("select count(*) from LearningLicence ll WHERE ll.status = 'Pending'")
-	Integer pendingCountInLl();
-	
-	@Query("select ll.id from LearningLicence ll WHERE ll.tempLLNo= ?1")
-	int findIdByLLNo(int llNo);
 }

@@ -16,6 +16,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 
 @Entity
@@ -37,46 +39,23 @@ public class User {
 	private long mobile_no ;
 	private String email;
 	private String password;
+	
 	private int photo_id;
-	
-	//############ Working #########
-//	@OneToOne(cascade=CascadeType.REMOVE)
-//	private DrivingLicence drivingLicence;
-
-	
-	//##########################
-	
-	
 //	@JoinColumn(name = "photo_id")
 //	@OneToOne( fetch=FetchType.LAZY ,cascade = CascadeType.ALL)
 //	private DatabaseFile databaseFile;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "registration_id")
+	private VehicleRegistration registration;
 	
-	
-	
-	
-	//############ Working #########
-//	@OneToOne(cascade = CascadeType.ALL)
-//	@JoinColumn(name = "registration_id")
-//	private VehicleRegistration registration;
-	
-	//##########################
-	
-//	@OneToOne(cascade=CascadeType.ALL,orphanRemoval = true,mappedBy = "user")
-//	@JoinColumn(referencedColumnName = "user_id")
-//	@OneToOne(cascade=CascadeType.ALL)
-//	private DrivingLicence drivingLicence;
-
-
-	//############ Working #########
 //	@JsonManagedReference
-//public VehicleRegistration getRegistration() {
-//		return registration;
-//	}
-//
-//	public void setRegistration(VehicleRegistration registration) {
-//		this.registration = registration;
-//	}
-	//############ Working #########
+public VehicleRegistration getRegistration() {
+		return registration;
+	}
+
+	public void setRegistration(VehicleRegistration registration) {
+		this.registration = registration;
+	}
 
 	//	public VehicleRegistration getRegistration() {
 //		return registration;
@@ -89,47 +68,10 @@ public class User {
 	public User() {
 	}
 
-	
-	//############ Working #########
-
-//	public DrivingLicence getDrivingLicence() {
-//		return drivingLicence;
-//	}
-//
-//	public void setDrivingLicence(DrivingLicence drivingLicence) {
-//		this.drivingLicence = drivingLicence;
-//	}
-	//############ Working #########
-	
-	
-//	public User(int id, String aadhar_no, String name, String role, Date dob, String address, String gender,
-//			String blood_group, long mobile_no, String email, String password, int count, int photo_id,
-//			DrivingLicence drivingLicence, VehicleRegistration registration) {
-//		super();
-//		this.id = id;
-//		this.aadhar_no = aadhar_no;
-//		this.name = name;
-//		this.role = role;
-//		this.dob = dob;
-//		this.address = address;
-//		this.gender = gender;
-//		this.blood_group = blood_group;
-//		this.mobile_no = mobile_no;
-//		this.email = email;
-//		this.password = password;
-////		this.count = count;
-//		this.photo_id = photo_id;
-//		this.drivingLicence = drivingLicence;
-//		this.registration = registration;
-//	}
-	
-	
-	
-
-
-
 	public User(int id, String aadhar_no, String name, String role, Date dob, String address, String gender,
-			String blood_group, long mobile_no, String email, String password, int photo_id) {
+			String blood_group, long mobile_no, String email, String password, int photo_id,
+			VehicleRegistration registration) {
+		super();
 		this.id = id;
 		this.aadhar_no = aadhar_no;
 		this.name = name;
@@ -142,15 +84,13 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.photo_id = photo_id;
+		this.registration = registration;
 	}
 
-
-	
 	public int getId() {
 		return id;
 	}
-	
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -243,24 +183,17 @@ public class User {
 		this.photo_id = photo_id;
 	}
 
-
 	@Override
 	public String toString() {
 		return String.format(
-				"User [id=%s, aadhar_no=%s, name=%s, role=%s, dob=%s, address=%s, gender=%s, blood_group=%s, mobile_no=%s, email=%s, password=%s, photo_id=%s]",
-				id, aadhar_no, name, role, dob, address, gender, blood_group, mobile_no, email, password, photo_id);
+				"User [id=%s, aadhar_no=%s, name=%s, role=%s, dob=%s, address=%s, gender=%s, blood_group=%s, mobile_no=%s, email=%s, password=%s, photo_id=%s, registration=%s]",
+				id, aadhar_no, name, role, dob, address, gender, blood_group, mobile_no, email, password, photo_id,
+				registration);
 	}
-
-//	@Override
-//	public String toString() {
-//		return String.format(
-//				"User [id=%s, aadhar_no=%s, name=%s, role=%s, dob=%s, address=%s, gender=%s, blood_group=%s, mobile_no=%s, email=%s, password=%s, photo_id=%s, drivingLicence=%s, registration=%s]",
-//				id, aadhar_no, name, role, dob, address, gender, blood_group, mobile_no, email, password, photo_id,
-//				drivingLicence, registration);
-//	}
-
-
+	
 	
 
+	
+	
 
 }
