@@ -44,7 +44,6 @@ public class Payment {
 
 	public Payment(int id, String payment_for, String payment_mode, double amount, int user_id, Date payment_date,
 			User user) {
-		super();
 		this.id = id;
 		this.payment_for = payment_for;
 		this.payment_mode = payment_mode;

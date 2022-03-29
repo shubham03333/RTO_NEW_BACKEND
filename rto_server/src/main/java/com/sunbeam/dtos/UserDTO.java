@@ -22,6 +22,9 @@ public class UserDTO {
 	private String blood_group; 	
 	private long mobile_no ;
 	private int photo_id;
+	private int count=0;
+	
+	
 	
 	public UserDTO() {
 	}
@@ -138,13 +141,24 @@ public class UserDTO {
 	public void setPhoto_id(int photo_id) {
 		this.photo_id = photo_id;
 	}
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
 
 	@Override
 	public String toString() {
 		return String.format(
-				"UserDTO [id=%s, name=%s, email=%s, password=%s, aadhar_no=%s, role=%s, dob=%s, address=%s, gender=%s, blood_group=%s, mobile_no=%s, photo_id=%s]",
-				id, name, email, password, aadhar_no, role, dob, address, gender, blood_group, mobile_no, photo_id);
+				"UserDTO [id=%s, name=%s, email=%s, password=%s, aadhar_no=%s, role=%s, dob=%s, address=%s, gender=%s, blood_group=%s, mobile_no=%s, photo_id=%s, count=%s]",
+				id, name, email, password, aadhar_no, role, dob, address, gender, blood_group, mobile_no, photo_id,
+				count);
 	}
+
+
+
 
 
 

@@ -16,4 +16,14 @@ public interface PucDao extends JpaRepository<Puc,Integer> {
 	 @Modifying
 		@Query("UPDATE Puc p SET p.puc_no=?1, p.status=?2  WHERE p.id=?3")
 		public void updatePuc(String registration_no,String status,int id);
+	 
+	 @Query("select count(*) from Puc p WHERE p.status = 'Pending'")
+		Integer pendingCountInPuc();
+	 
+	 @Query("select count(*) from Puc p")
+		Integer pucCount();
+	 
+	 @Query ("select p.id from Puc p WHERE p.registration_no = ?1")
+	  int findIdByregistration_no(String id);
+	 
 }

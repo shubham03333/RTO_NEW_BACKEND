@@ -28,7 +28,7 @@ public class LearningLicence {
 	@Id
 	@Column(name = "temp_ll_id")
 	private int id;
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int tempLLNo;
 	private String rto;
 	@Temporal(TemporalType.DATE)
@@ -39,36 +39,38 @@ public class LearningLicence {
 	private  int payment_id=1;
 	private int user_id;
 	
-	private String status="Pending..";
+	private String status="Pending";
 	@OneToOne(cascade = CascadeType.MERGE)
 	private User user ;
 	@OneToOne(cascade = CascadeType.MERGE)
-//	@JoinColumn(name = "payment_no")
+	@JoinColumn(name = "transaction_no")
 	private Payment payment;
 	
-	
-	
-
 
 	public LearningLicence() {
 		
 	}
 
+
+	
+
 	public LearningLicence(int id, int tempLLNo, String rto, Date issue_date, Date expiry_date, String l_category,
 			int payment_id, int user_id, String status, User user, Payment payment) {
-		super();
 		this.id = id;
 		this.tempLLNo = tempLLNo;
 		this.rto = rto;
 		this.issue_date = issue_date;
 		this.expiry_date = expiry_date;
-		this.L_category = l_category;
+		L_category = l_category;
 		this.payment_id = payment_id;
 		this.user_id = user_id;
 		this.status = status;
 		this.user = user;
 		this.payment = payment;
 	}
+
+
+
 
 	public int getId() {
 		return id;
@@ -159,6 +161,9 @@ public class LearningLicence {
 	public void setPayment(Payment payment) {
 		this.payment = payment;
 	}
+
+
+
 
 	@Override
 	public String toString() {

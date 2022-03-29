@@ -15,4 +15,7 @@ public interface ComplainDao extends JpaRepository<Complain, Integer> {
 	 @Modifying
 		@Query("UPDATE Complain c SET c.complain_no=?1  WHERE c.id=?2")
 		public void updateComplain(String complain_no,int id);
+	 
+	 @Query("select count(*) from Complain c WHERE c.status = 'Pending'")
+		Integer pendingCountInComplain();
 }

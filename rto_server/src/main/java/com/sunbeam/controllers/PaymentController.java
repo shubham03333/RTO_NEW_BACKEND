@@ -17,7 +17,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sunbeam.daos.DlDao;
+import com.sunbeam.daos.LlDao;
 import com.sunbeam.daos.PaymentDao;
+import com.sunbeam.daos.PermitDao;
+import com.sunbeam.daos.PucDao;
+import com.sunbeam.daos.VehicleRegistrationDao;
+import com.sunbeam.daos.VehicleTransferDao;
 import com.sunbeam.dtos.Response;
 import com.sunbeam.entities.Payment;
 import com.sunbeam.entities.User;
@@ -37,6 +43,28 @@ public class PaymentController {
 
 	@Autowired
 	private UserServiceImpl userServiceImpl;
+	
+	
+	@Autowired
+	private VehicleTransferDao vtransferDao;
+	
+	@Autowired
+	private VehicleRegistrationDao vRegistrationDao;
+	
+	@Autowired
+	private PucDao pucDao;
+	
+	@Autowired
+	private PermitDao permitDao;
+	
+	@Autowired
+	private LlDao llDao;
+	
+	@Autowired
+	private DlDao dlDao;
+	
+	
+	
 	@GetMapping("/search")
 	public ResponseEntity<?> findPayment() {
 		List<Payment> result = new ArrayList<>();
@@ -74,6 +102,26 @@ public class PaymentController {
 	@PostMapping("/add_payment")
 	public ResponseEntity<?> addPayment(@RequestBody Payment pay) {
 		Payment payment = paymentServiceImpl.savePayment(pay);
+		
+		//#############################################
+//		Integer userId=0;
+//		userId=payment.getUser_id();
+//		
+//		if( vRegistrationDao.findIdByUserId(userId) > 0 && vRegistrationDao.findByid(vRegistrationDao.findIdByUserId(userId)).getStatus().equals("Pending") && payment.getPayment_for()=="RC") {
+//			
+//			vRegistrationDao.findByid(vRegistrationDao.findIdByUserId(userId)).setPayment(payment);
+//			
+//		}
+//		else if( vtransferDao.findIdByUserId(userId) > 0 && vtransferDao.findByid(vtransferDao.findIdByUserId(userId)).getStatus().equals("Pending") && payment.getPayment_for() == "Vehicle transfer" ) {
+//			
+//			vtransferDao.findByid(vtransferDao.findIdByUserId(userId)).setPayment(payment);
+//			
+//		}
+//		
+		
+		
+		
+		//#############################################
 	
 		payment.setUser(userServiceImpl.findUserFromdbById(payment.getUser_id()));
 //		System.out.println(result);
