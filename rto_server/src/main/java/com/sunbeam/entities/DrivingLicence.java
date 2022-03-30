@@ -56,7 +56,11 @@ public class DrivingLicence {
 	@JoinColumn(name = "temp_LL_no")
 	private LearningLicence learningLicence;
 
-	@OneToOne(cascade = CascadeType.ALL)
+//	@OneToOne(cascade = CascadeType.ALL)
+//	@JoinColumn(name = "transaction_no")
+//	private Payment payment;
+	
+	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "transaction_no")
 	private Payment payment;
 

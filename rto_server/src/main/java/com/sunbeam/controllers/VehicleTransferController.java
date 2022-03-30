@@ -22,10 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sunbeam.daos.VehicleTransferDao;
 import com.sunbeam.dtos.Response;
 import com.sunbeam.dtos.VehicleTransferDTO;
+import com.sunbeam.entities.Payment;
 import com.sunbeam.entities.User;
 import com.sunbeam.entities.VehicleRegistration;
 import com.sunbeam.entities.VehicleTransfer;
 import com.sunbeam.services.EmailSenderServiceImpl;
+import com.sunbeam.services.PaymentServiceImpl;
 import com.sunbeam.services.UserServiceImpl;
 import com.sunbeam.services.VehicleRegistrationServiceImpl;
 import com.sunbeam.services.VehicleTransferServiceImpl;
@@ -49,6 +51,9 @@ public class VehicleTransferController {
 
 	@Autowired
 	private UserServiceImpl userServiceImpl;
+	
+	@Autowired
+	private PaymentServiceImpl paymentServiceImpl;
 
 	@GetMapping("/search")
 	public ResponseEntity<?> findVehicletransfer() {
@@ -65,7 +70,7 @@ public class VehicleTransferController {
 			return (ResponseEntity<VehicleTransfer>) Response.error("Transfer not exist with id :" + id);
 		}
 		vehicleTransfer.setVehicleRegistration1(
-				vehicleRegistrationServiceImpl.findBYId(Integer.parseInt(vehicleTransfer.getRegistration_id())));
+				vehicleRegistrationServiceImpl.findBYId((vehicleTransfer.getRegistration_id())));
 //				.orElseThrow(() -> new ResourceNotFoundException("Transfer not exist with id :" + id));
 		return ResponseEntity.ok(vehicleTransfer);
 	}
@@ -99,6 +104,20 @@ public class VehicleTransferController {
 		return ResponseEntity.ok(vehicleTransfer);
 	}
 
+	
+	@GetMapping("/byregId/{id}")
+	public ResponseEntity<VehicleTransfer> getVehicleTransferByregid(@PathVariable int id) {
+
+		try {
+			int vt = transferDao.findIdByregistration_id(id);
+			System.out.println(vt);
+			VehicleTransfer vehicleTrnf = vehicleTransferServiceImpl.findById(vt);
+
+			return ResponseEntity.ok(vehicleTrnf);
+		} catch (Exception e) {
+			return (ResponseEntity<VehicleTransfer>) Response.error("RC not exist with registration number");
+		}
+	}
 	// ############################################## UNDER TESTING
 	// ###############################################
 
@@ -122,6 +141,9 @@ public class VehicleTransferController {
 
 //		transfer.setVehicleRegistration1(vehicleTransferServiceImpl.findVRegistrationByReg_no(vehicleTransfer.getRegistration_no()));
 //		System.out.println(transfer.getVehicleRegistration1());
+		
+			
+		
 		if (transfer == null)
 			return Response.error("vehicle_transfer  is not empty");
 		return Response.success(transfer);
@@ -153,6 +175,7 @@ public class VehicleTransferController {
 		System.out.println(user);
 		transfer.setStatus(transferDetails.getStatus());
 		transfer.setTransfer_no(transferDetails.getTransfer_no());
+		transfer.setPayment(transferDetails.getPayment());
 
 		vehicleTransferServiceImpl.updateVTransfer(transfer.getStatus(), transfer.getId());
 		transfer.setTransfer_no(transferDetails.getTransfer_no());

@@ -251,14 +251,6 @@ public class User {
 				id, aadhar_no, name, role, dob, address, gender, blood_group, mobile_no, email, password, photo_id);
 	}
 
-//	@Override
-//	public String toString() {
-//		return String.format(
-//				"User [id=%s, aadhar_no=%s, name=%s, role=%s, dob=%s, address=%s, gender=%s, blood_group=%s, mobile_no=%s, email=%s, password=%s, photo_id=%s, drivingLicence=%s, registration=%s]",
-//				id, aadhar_no, name, role, dob, address, gender, blood_group, mobile_no, email, password, photo_id,
-//				drivingLicence, registration);
-//	}
-
 
 	
 

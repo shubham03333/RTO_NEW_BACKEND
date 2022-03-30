@@ -10,5 +10,8 @@ public interface PaymentDao extends JpaRepository<Payment, Integer> {
 	
 	 @Query ("select p.id from Payment p WHERE p.user_id = ?1")
 	  int findIdByUserId(int id);
+	 
+//	 @Query ("select p.id from Payment p WHERE p.user_id = ?1 and p.payment_for = ?2")
+//	  int findIdByUserIdAndPfor(int id,String payment_for);
 	  
 }

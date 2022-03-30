@@ -29,4 +29,7 @@ public interface VehicleTransferDao extends JpaRepository<VehicleTransfer, Integ
 	 	
 	 	 @Query ("select vt.id from VehicleTransfer vt WHERE vt.registration_no = ?1")
 	 	  int findIdByregistration_no(String id);
+	 	 
+	 	 @Query ("select vt.id from VehicleTransfer vt WHERE vt.registration_id = ?1")
+	 	  int findIdByregistration_id(int id);
 }

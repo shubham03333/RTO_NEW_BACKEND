@@ -204,7 +204,7 @@ try {
 			// if approved then sends the mail to the applicant
 			emailSenderService.sendSimpleEmail(user.getEmail(), "Dear " + user.getName() + ",\n\n"
 					+ "Congratulations, Your RC is ready .\n"
-					+ "You can download copy of it from RTO MANAGEMENT WEBSITE . and Your Rc will be delivered within 15 days at yor registered Address.\n"
+					+ "You can download copy of it from RTO MANAGEMENT WEBSITE BY Entering Registration id as [ " + rc.getId()+" ] and also Your Rc will be delivered within 7 working days at yor registered Address.\n"
 					+ "\n" + "Warm Regards,\n" + "RTO Info Group,\n", "Your RC approved");
 		}
 		return ResponseEntity.ok(rc);

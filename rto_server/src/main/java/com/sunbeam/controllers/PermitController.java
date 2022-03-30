@@ -40,13 +40,12 @@ public class PermitController {
 
 	@Autowired
 	private PermitServiceImpl permitServiceImpl;
-	
+
 	@Autowired
 	private EmailSenderServiceImpl emailSenderService;
-	
+
 	@Autowired
 	private UserServiceImpl userServiceImpl;
-
 
 	@GetMapping("/search")
 	public ResponseEntity<?> findPermit() {
@@ -64,10 +63,10 @@ public class PermitController {
 //		.orElseThrow(() -> new ResourceNotFoundException("Permit not exist with id :" + id));
 		return ResponseEntity.ok(permit);
 	}
-	
+
 	@GetMapping("/byUserId1/{id}")
 	public ResponseEntity<Permit> getPermitById11(@PathVariable int id) {
-		
+
 		Permit p = permitServiceImpl.findLLBYUserId(id);
 		System.out.println(p);
 		if (p == null) {
@@ -77,26 +76,26 @@ public class PermitController {
 		return ResponseEntity.ok(p);
 	}
 
-	//############################################## UNDER TESTING ###############################################
-	
+	// ############################################## UNDER TESTING
+	// ###############################################
+
 	@GetMapping("/byUserId/{id}")
 	public ResponseEntity<PermitDTO> getPermitById1(@PathVariable int id) {
-		
-	
-		PermitDTO p=new PermitDTO();
-		
+
+		PermitDTO p = new PermitDTO();
+
 		System.out.println(permitDao.pendingCountInPermit());
-		
-		if(permitDao.pendingCountInPermit()!=null) {
+
+		if (permitDao.pendingCountInPermit() != null) {
 			p.setPendingCount(permitDao.pendingCountInPermit());
 		}
 
 		return ResponseEntity.ok(p);
 	}
 
-	//############################################## UNDER TESTING ###############################################
-	
-	
+	// ############################################## UNDER TESTING
+	// ###############################################
+
 	@GetMapping("/rcNo/{RcNo}")
 	public ResponseEntity<Permit> getPermitStatusByRcNo(@PathVariable String RcNo) {
 		try {
@@ -110,17 +109,42 @@ public class PermitController {
 		}
 
 	}
-	
-	
+
 	@PostMapping("/add_permit")
 	public ResponseEntity<?> addPermit(@RequestBody Permit permit) {
-		Permit permission = permitServiceImpl.savePermit(permit);
+
+		Permit permission = new Permit();
+
+		try {
+
+			int pid = permitDao.findIdByregistration_no(permit.getRegistration_no());
+
+			Permit pobj = permitDao.findByid(pid);
+
+			permitDao.delete(pobj);
+
+		} catch (Exception e) {
 		
+
+			permission = permitServiceImpl.savePermit(permit);
+
+			permission.setVehicleRegistration(permitServiceImpl.findVRegistrationByRegId(permit.getRegistration_id()));
+			System.out.println(permission);
+			if (permission == null)
+				return Response.error("permit not is empty");
+			return Response.success(permission);
+		}
+
+
+
+		permission = permitServiceImpl.savePermit(permit);
+
 		permission.setVehicleRegistration(permitServiceImpl.findVRegistrationByRegId(permit.getRegistration_id()));
 		System.out.println(permission);
 		if (permission == null)
 			return Response.error("permit not is empty");
 		return Response.success(permission);
+
 	}
 
 	@DeleteMapping("/{id}")
@@ -138,15 +162,16 @@ public class PermitController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Permit> updateUser(@PathVariable int id, @RequestBody Permit permission) throws MessagingException {
+	public ResponseEntity<Permit> updateUser(@PathVariable int id, @RequestBody Permit permission)
+			throws MessagingException {
 		Permit permit = permitServiceImpl.findBYId(id);
 		if (permit == null) {
 			return (ResponseEntity<Permit>) Response.error("Permit not exist with id :" + id);
 		}
 //				.orElseThrow(() -> new ResourceNotFoundException("User not exist with id :" + id));
 
-		User user=userServiceImpl.findUserFromdbById(permit.getUser_id());
-			System.out.println(user);
+		User user = userServiceImpl.findUserFromdbById(permit.getUser_id());
+		System.out.println(user);
 
 		permit.setPermit_no(permission.getPermit_no());
 //		permit.setFrom_state(permission.getFrom_state());
@@ -154,11 +179,10 @@ public class PermitController {
 //		permit.setFrom_date(permission.getFrom_date());
 //		permit.setTo_date(permission.getTo_date());
 		permit.setStatus(permission.getStatus());
-		
-		permitServiceImpl.updatePermit(permit.getPermit_no(), permit.getStatus(),permit.getId());
-		
 
-if (permit.getStatus().equalsIgnoreCase("Approved")) {
+		permitServiceImpl.updatePermit(permit.getPermit_no(), permit.getStatus(), permit.getId());
+
+		if (permit.getStatus().equalsIgnoreCase("Approved")) {
 			// if approved then sends the mail to the applicant
 			emailSenderService.sendSimpleEmail(user.getEmail(), "Dear " + user.getName() + ",\n\n"
 					+ "Congratulations, Your Permit is Approved  .\n"

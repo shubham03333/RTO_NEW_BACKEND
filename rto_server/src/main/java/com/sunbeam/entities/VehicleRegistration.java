@@ -47,6 +47,7 @@ public class VehicleRegistration {
 	private int seat_capacity;
 	private int payment_id = 3;
 	private String status = "Pending";
+	private int transaction_id;
 
 //	@JsonIgnore
 	private int user_id;
@@ -76,14 +77,20 @@ public class VehicleRegistration {
 	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "transaction_no")
 	private Payment payment;
+	
+	
+	
 
 	public VehicleRegistration() {
 	}
 
+
+
 	public VehicleRegistration(int id, String registration_no, String owner, String make, String chassis_no,
 			String vehicle_class, Date purchase_date, String fuel_type, String engine_no, int engine_capacity,
 			int insurance_status, int puc_status, String hypothecated_to, int wheels, int seat_capacity, int payment_id,
-			String status, int user_id, VehicleTransfer vehicletransfer, List<Permit> permitList, Payment payment) {
+			String status, int transaction_id, int user_id, VehicleTransfer vehicletransfer, List<Permit> permitList,
+			Payment payment) {
 		this.id = id;
 		this.registration_no = registration_no;
 		this.owner = owner;
@@ -101,11 +108,14 @@ public class VehicleRegistration {
 		this.seat_capacity = seat_capacity;
 		this.payment_id = payment_id;
 		this.status = status;
+		this.transaction_id = transaction_id;
 		this.user_id = user_id;
 		this.vehicletransfer = vehicletransfer;
 		this.permitList = permitList;
 		this.payment = payment;
 	}
+
+
 
 	public int getUser_id() {
 		return user_id;
@@ -274,14 +284,29 @@ public class VehicleRegistration {
 	public void setPayment(Payment payment) {
 		this.payment = payment;
 	}
+	
+
+	public int getTransaction_id() {
+		return transaction_id;
+	}
+
+
+	public void setTransaction_id(int transaction_id) {
+		this.transaction_id = transaction_id;
+	}
+
+
 
 	@Override
 	public String toString() {
 		return String.format(
-				"VehicleRegistration [id=%s, registration_no=%s, owner=%s, make=%s, chassis_no=%s, vehicle_class=%s, purchase_date=%s, fuel_type=%s, engine_no=%s, engine_capacity=%s, insurance_status=%s, puc_status=%s, hypothecated_to=%s, wheels=%s, seat_capacity=%s, payment_id=%s, status=%s, user_id=%s, vehicletransfer=%s, permitList=%s, payment=%s]",
+				"VehicleRegistration [id=%s, registration_no=%s, owner=%s, make=%s, chassis_no=%s, vehicle_class=%s, purchase_date=%s, fuel_type=%s, engine_no=%s, engine_capacity=%s, insurance_status=%s, puc_status=%s, hypothecated_to=%s, wheels=%s, seat_capacity=%s, payment_id=%s, status=%s, transaction_id=%s, user_id=%s, vehicletransfer=%s, permitList=%s, payment=%s]",
 				id, registration_no, owner, make, chassis_no, vehicle_class, purchase_date, fuel_type, engine_no,
 				engine_capacity, insurance_status, puc_status, hypothecated_to, wheels, seat_capacity, payment_id,
-				status, user_id, vehicletransfer, permitList, payment);
+				status, transaction_id, user_id, vehicletransfer, permitList, payment);
 	}
+
+
+
 
 }

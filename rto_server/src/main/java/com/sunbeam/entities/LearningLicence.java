@@ -42,10 +42,14 @@ public class LearningLicence {
 	private String status="Pending";
 	@OneToOne(cascade = CascadeType.MERGE)
 	private User user ;
-	@OneToOne(cascade = CascadeType.MERGE)
+	
+//	@OneToOne(cascade = CascadeType.MERGE)
+//	@JoinColumn(name = "transaction_no")
+//	private Payment payment;
+	
+	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "transaction_no")
 	private Payment payment;
-	
 
 	public LearningLicence() {
 		

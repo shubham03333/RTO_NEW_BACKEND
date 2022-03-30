@@ -28,7 +28,7 @@ public class VehicleTransfer {
 	private long new_owner_mobile;
 	private String status = "Pending";
 	private int payment_id = 4;
-	private String registration_id;
+	private int registration_id;
 	private String registration_no;
 
 	private int user_id;
@@ -45,6 +45,8 @@ public class VehicleTransfer {
 	private Payment payment;
 	
 	
+	
+	
 //	@Column(insertable = false)
 
 	public VehicleTransfer() {
@@ -53,7 +55,7 @@ public class VehicleTransfer {
 
 
 	public VehicleTransfer(int id, String transfer_no, String new_owner, long new_owner_aadhar, String new_owner_email,
-			long new_owner_mobile, String status, int payment_id, String registration_id, String registration_no,
+			long new_owner_mobile, String status, int payment_id, int registration_id, String registration_no,
 			int user_id, VehicleRegistration vehicleRegistration1, Payment payment) {
 		this.id = id;
 		this.transfer_no = transfer_no;
@@ -166,11 +168,11 @@ public class VehicleTransfer {
 		this.user_id = user_id;
 	}
 
-	public String getRegistration_id() {
+	public int getRegistration_id() {
 		return registration_id;
 	}
 
-	public void setRegistration_id(String registration_id) {
+	public void setRegistration_id(int registration_id) {
 		this.registration_id = registration_id;
 	}
 

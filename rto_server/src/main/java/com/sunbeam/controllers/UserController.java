@@ -210,6 +210,7 @@ public class UserController {
 			user.setAddress(UserDetails.getAddress());
 			user.setMobile_no(UserDetails.getMobile_no());
 			user.setPassword(UserDetails.getPassword());
+			user.setEmail(UserDetails.getEmail());
 //			user.setPassword(passwordEncoder.encode(UserDetails.getPassword()));
 			
 			userService.updateUser(user.getAddress(),user.getMobile_no(),user.getPassword(),user.getId());
