@@ -84,6 +84,14 @@ public class PermitController {
 
 		PermitDTO p = new PermitDTO();
 
+		//##############################
+		
+		
+		if (p == null) {
+			return (ResponseEntity<PermitDTO>) Response.error("Permit not exist with user_id :" + id);
+		}
+		
+		//##############################
 		System.out.println(permitDao.pendingCountInPermit());
 
 		if (permitDao.pendingCountInPermit() != null) {

@@ -6,12 +6,15 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
 
 import com.sunbeam.entities.DatabaseFile;
 
 public class UserDTO {
 	private int id;
 	private String name;
+	@Email
 	private String email;
 	private String password;
 	private String aadhar_no;

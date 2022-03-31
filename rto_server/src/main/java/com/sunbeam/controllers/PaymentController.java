@@ -122,6 +122,10 @@ public class PaymentController {
 		int userId = 0;
 
 		userId = payment.getUser_id();
+		
+		try {
+			
+		
 
 		if (payment.getPayment_for().equals("RC")) {
 
@@ -212,6 +216,10 @@ public class PaymentController {
 		if (payment == null)
 			return Response.error("Payment is empty");
 		return Response.success(payment);
+		} catch (Exception e) {
+			return (ResponseEntity<Payment>) Response.error("Something went wrong please check your payment for option!");
+		
+		}
 	}
 
 	@DeleteMapping("/{id}")

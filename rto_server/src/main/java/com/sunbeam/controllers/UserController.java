@@ -51,7 +51,7 @@ public class UserController {
 
 	
 	@Autowired
-	    private DatabaseFileService fileStorageService;
+	private DatabaseFileService fileStorageService;
 	
 	@Autowired
 	DtoEntityConverter converter;
@@ -90,10 +90,15 @@ public class UserController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> signUp(@RequestBody UserDTO userDto) {
+try {
+	UserDTO result = userService.saveUser(userDto);
+	System.out.println(result.getPassword());
+	return Response.success(result);
+} catch (Exception e) {
 
-		UserDTO result = userService.saveUser(userDto);
-		System.out.println(result.getPassword());
-		return Response.success(result);
+	return Response.error("Enter valid email id");
+}
+		
 	}
 
 	@PostMapping("/register")
