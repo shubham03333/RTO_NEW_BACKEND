@@ -1,6 +1,8 @@
 package com.sunbeam.controllers;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,12 +24,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sunbeam.daos.LlDao;
 import com.sunbeam.dtos.LearningLicenceDTO;
 import com.sunbeam.dtos.Response;
-import com.sunbeam.entities.DrivingLicence;
 import com.sunbeam.entities.LearningLicence;
 import com.sunbeam.entities.User;
 import com.sunbeam.services.EmailSenderServiceImpl;
 import com.sunbeam.services.LlServiceImpl;
 import com.sunbeam.services.UserServiceImpl;
+
+
+
+
+
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -52,6 +58,8 @@ public class LlController {
 	public ResponseEntity<?> findLl() {
 		List<LearningLicence> result = new ArrayList<>();
 		result = llServiceImpl.findAllLls();
+		
+//		Collections.sort(result,Collections.reverseOrder());
 		return Response.success(result);
 	}
 
@@ -86,6 +94,7 @@ public class LlController {
 	
 	}
 
+	// this is for count off LL in admin dashbord and for certificate
 	@GetMapping("/byUserId/{id}")
 	public ResponseEntity<LearningLicenceDTO> getLearningById1(@PathVariable int id) {
 		
@@ -145,7 +154,7 @@ public class LlController {
 		
 		ll.setTempLLNo(llDetails.getTempLLNo());
 //		ll.setRto(llDetails.getRto());
-		ll.setIssue_date(llDetails.getIssue_date());
+		ll.setIssue_date((llDetails.getIssue_date()));
 		ll.setExpiry_date(llDetails.getExpiry_date());
 		ll.setStatus(llDetails.getStatus());
 		llServiceImpl.updateLl(ll.getTempLLNo(), ll.getIssue_date(), ll.getExpiry_date(), ll.getStatus(), ll.getId());
@@ -167,6 +176,31 @@ if (ll.getStatus().equalsIgnoreCase("Approved")) {
 		return ResponseEntity.ok(ll);
 	}
 	
+	
+	@GetMapping("/byUserIdforcert/{id}")
+	public ResponseEntity<LearningLicence> getLearningLicenceByUserIdforcerti(@PathVariable int id) {
+		try {
+			
+			List<Integer> llids = llDao.findIdfrommulByUserId(id);
+//			System.out.println(ll);
+			
+			for (Integer integer : llids) {
+				
+					id=integer;
+			}
+			
+			System.out.println("llid "+id);
+			
+			LearningLicence ll = llServiceImpl.findBYId(id);
+
+			return ResponseEntity.ok(ll);
+			
+		} catch (Exception e) {
+			return (ResponseEntity<LearningLicence>) Response.error("You have not applied for LL Yet !");
+		}
+		
+	
+	}
 	
 	
 

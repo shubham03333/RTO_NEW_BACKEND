@@ -45,8 +45,6 @@ public class UserController {
 	private UserDao userDao;
 	
 
-//	@Autowired
-//	private PasswordEncoder passwordEncoder;
 	
 
 	
@@ -89,14 +87,21 @@ public class UserController {
 	
 
 	@PostMapping("/signup")
-	public ResponseEntity<?> signUp(@RequestBody UserDTO userDto) {
+	public ResponseEntity<?> signUp(@Valid @RequestBody UserDTO userDto) {
 try {
+	Credentials cred= new Credentials();
+	cred.setEmail(userDto.getEmail());
+	cred.setPassword(userDto.getPassword());
+	
+	UserDTO users=userService.findUserByEmailAndPassword(cred);
+	
+	
 	UserDTO result = userService.saveUser(userDto);
 	System.out.println(result.getPassword());
 	return Response.success(result);
 } catch (Exception e) {
 
-	return Response.error("Enter valid email id");
+	return Response.error("Enter valid email id or user id already registered ");
 }
 		
 	}

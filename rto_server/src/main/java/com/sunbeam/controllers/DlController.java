@@ -202,4 +202,31 @@ if (dl.getStatus().equalsIgnoreCase("Approved")) {
 	
 		return ResponseEntity.ok(dl);
 	}
+	
+	
+	
+	@GetMapping("/byUserIdforcert/{id}")
+	public ResponseEntity<DrivingLicence> getDrivingLicenceByUserIdforcerti(@PathVariable int id) {
+		try {
+			
+			List<Integer> dlids = dlDao.findIdfrommulByUserId(id);
+//			System.out.println(ll);
+			
+			for (Integer integer : dlids) {
+				
+					id=integer;
+			}
+			
+			System.out.println("dlid "+id);
+			
+			DrivingLicence dl = dlServiceImpl.findBYId(id);
+
+			return ResponseEntity.ok(dl);
+			
+		} catch (Exception e) {
+			return (ResponseEntity<DrivingLicence>) Response.error("You have not applied for LL Yet !");
+		}
+		
+	
+	}
 }

@@ -1,6 +1,7 @@
 package com.sunbeam.daos;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -26,4 +27,7 @@ public interface LlDao extends JpaRepository<LearningLicence,Integer> {
 	
 	@Query("select ll.id from LearningLicence ll WHERE ll.tempLLNo= ?1")
 	int findIdByLLNo(int llNo);
+	
+	 @Query ("select ll.id from LearningLicence ll WHERE ll.user_id = ?1 order by ll.id asc")
+	List<Integer> findIdfrommulByUserId(int id);
 }

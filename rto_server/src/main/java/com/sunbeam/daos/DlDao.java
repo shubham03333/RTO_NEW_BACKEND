@@ -1,6 +1,7 @@
 package com.sunbeam.daos;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -24,4 +25,8 @@ public interface DlDao extends JpaRepository<DrivingLicence,Integer> {
 
 	 @Query("select count(*) from DrivingLicence dl")
 				Integer dLCount();
+	 
+	 
+	 @Query ("select dl.id from DrivingLicence dl WHERE dl.user_id = ?1 order by dl.id asc")
+		List<Integer> findIdfrommulByUserId(int id);
 }
