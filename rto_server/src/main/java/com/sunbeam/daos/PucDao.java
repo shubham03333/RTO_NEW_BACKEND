@@ -7,13 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import com.sunbeam.entities.Puc;
 
 public interface PucDao extends JpaRepository<Puc,Integer> {
+	
 	Puc findById(int id);
 
 	 @Query ("select p.id from Puc p WHERE p.user_id = ?1")
 	  int findIdByUserId(int id);
 	  
 	
-	 @Modifying
+	 	@Modifying
 		@Query("UPDATE Puc p SET p.puc_no=?1, p.status=?2  WHERE p.id=?3")
 		public void updatePuc(String registration_no,String status,int id);
 	 
@@ -23,7 +24,7 @@ public interface PucDao extends JpaRepository<Puc,Integer> {
 	 @Query("select count(*) from Puc p")
 		Integer pucCount();
 	 
-	 @Query ("select p.id from Puc p WHERE p.registration_no = ?1")
+	 @Query("select p.id from Puc p WHERE p.registration_no = ?1")
 	  int findIdByregistration_no(String id);
 	 
 }

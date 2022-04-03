@@ -46,7 +46,7 @@ public class PermitServiceImpl {
 		
 		return vehicleRegistrationServiceImpl.findBYId(regId);
 	}
-	public Permit findLLBYUserId(int user_id) {
+	public Permit findPermitBYUserId(int user_id) {
 
 		int pId = permitDao.findIdByUserId(user_id);
 

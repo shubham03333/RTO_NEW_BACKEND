@@ -1,9 +1,11 @@
 package com.sunbeam.dtos;
 
 public class PUCDTO {
+	
 	private int id;
 	private int count=0;
 	private Integer pendingCount=0;
+	
 	public PUCDTO() {
 	}
 	

@@ -1,6 +1,7 @@
 package com.sunbeam.payload;
 
 public class Responsef {
+	
     private String fileName;
     private String fileDownloadUri;
     private String fileType;

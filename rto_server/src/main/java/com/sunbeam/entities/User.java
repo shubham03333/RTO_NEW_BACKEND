@@ -1,6 +1,5 @@
 package com.sunbeam.entities;
 
-
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -16,12 +15,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
-
-
 @Entity
-@Table(name = "users",uniqueConstraints = @UniqueConstraint(name= "uaadhar_no",columnNames = {"aadhar_no"} ))
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(name = "aadhar_no", columnNames = { "aadhar_no" }))
 public class User {
-	
+
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "user_id")
@@ -34,40 +31,35 @@ public class User {
 	private String address;
 	private String gender;
 	private String blood_group;
-	private long mobile_no ;
+	private long mobile_no;
 	private String email;
 	private String password;
 	private int photo_id;
-	
-	//############ Working #########
+	private String status="pending";
+
+	// ############ Working #########
 //	@OneToOne(cascade=CascadeType.REMOVE)
 //	private DrivingLicence drivingLicence;
 
-	
-	//##########################
-	
-	
+	// ##########################
+
 //	@JoinColumn(name = "photo_id")
 //	@OneToOne( fetch=FetchType.LAZY ,cascade = CascadeType.ALL)
 //	private DatabaseFile databaseFile;
-	
-	
-	
-	
-	//############ Working #########
+
+	// ############ Working #########
 //	@OneToOne(cascade = CascadeType.ALL)
 //	@JoinColumn(name = "registration_id")
 //	private VehicleRegistration registration;
-	
-	//##########################
-	
+
+	// ##########################
+
 //	@OneToOne(cascade=CascadeType.ALL,orphanRemoval = true,mappedBy = "user")
 //	@JoinColumn(referencedColumnName = "user_id")
 //	@OneToOne(cascade=CascadeType.ALL)
 //	private DrivingLicence drivingLicence;
 
-
-	//############ Working #########
+	// ############ Working #########
 //	@JsonManagedReference
 //public VehicleRegistration getRegistration() {
 //		return registration;
@@ -76,9 +68,9 @@ public class User {
 //	public void setRegistration(VehicleRegistration registration) {
 //		this.registration = registration;
 //	}
-	//############ Working #########
+	// ############ Working #########
 
-	//	public VehicleRegistration getRegistration() {
+	// public VehicleRegistration getRegistration() {
 //		return registration;
 //	}
 //
@@ -89,47 +81,8 @@ public class User {
 	public User() {
 	}
 
-	
-	//############ Working #########
-
-//	public DrivingLicence getDrivingLicence() {
-//		return drivingLicence;
-//	}
-//
-//	public void setDrivingLicence(DrivingLicence drivingLicence) {
-//		this.drivingLicence = drivingLicence;
-//	}
-	//############ Working #########
-	
-	
-//	public User(int id, String aadhar_no, String name, String role, Date dob, String address, String gender,
-//			String blood_group, long mobile_no, String email, String password, int count, int photo_id,
-//			DrivingLicence drivingLicence, VehicleRegistration registration) {
-//		super();
-//		this.id = id;
-//		this.aadhar_no = aadhar_no;
-//		this.name = name;
-//		this.role = role;
-//		this.dob = dob;
-//		this.address = address;
-//		this.gender = gender;
-//		this.blood_group = blood_group;
-//		this.mobile_no = mobile_no;
-//		this.email = email;
-//		this.password = password;
-////		this.count = count;
-//		this.photo_id = photo_id;
-//		this.drivingLicence = drivingLicence;
-//		this.registration = registration;
-//	}
-	
-	
-	
-
-
-
 	public User(int id, String aadhar_no, String name, String role, Date dob, String address, String gender,
-			String blood_group, long mobile_no, String email, String password, int photo_id) {
+			String blood_group, long mobile_no, String email, String password, int photo_id, String status) {
 		this.id = id;
 		this.aadhar_no = aadhar_no;
 		this.name = name;
@@ -142,15 +95,13 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.photo_id = photo_id;
+		this.status = status;
 	}
 
-
-	
 	public int getId() {
 		return id;
 	}
-	
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -243,16 +194,20 @@ public class User {
 		this.photo_id = photo_id;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 	@Override
 	public String toString() {
 		return String.format(
-				"User [id=%s, aadhar_no=%s, name=%s, role=%s, dob=%s, address=%s, gender=%s, blood_group=%s, mobile_no=%s, email=%s, password=%s, photo_id=%s]",
-				id, aadhar_no, name, role, dob, address, gender, blood_group, mobile_no, email, password, photo_id);
+				"User [id=%s, aadhar_no=%s, name=%s, role=%s, dob=%s, address=%s, gender=%s, blood_group=%s, mobile_no=%s, email=%s, password=%s, photo_id=%s, status=%s]",
+				id, aadhar_no, name, role, dob, address, gender, blood_group, mobile_no, email, password, photo_id,
+				status);
 	}
-
-
-	
-
 
 }

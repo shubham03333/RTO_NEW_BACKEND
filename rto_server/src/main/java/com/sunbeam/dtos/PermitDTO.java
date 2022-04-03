@@ -2,8 +2,10 @@ package com.sunbeam.dtos;
 
 public class PermitDTO {
 	private int id;
+	
 	private Integer pendingCount = 0;
 	private int count = 0;
+	
 	public PermitDTO() {
 	}
 	public PermitDTO(int id, Integer pendingCount, int count) {
@@ -33,7 +35,5 @@ public class PermitDTO {
 	public String toString() {
 		return String.format("PermitDTO [id=%s, pendingCount=%s, count=%s]", id, pendingCount, count);
 	}
-	
-	
 	
 }

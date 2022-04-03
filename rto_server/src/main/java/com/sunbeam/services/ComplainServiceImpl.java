@@ -42,7 +42,7 @@ public class ComplainServiceImpl {
 	}
 	
 	
-	public Complain findLLBYUserId(int user_id) {
+	public Complain findComplainBYUserId(int user_id) {
 
 		int cId = complainDao.findIdByUserId(user_id);
 

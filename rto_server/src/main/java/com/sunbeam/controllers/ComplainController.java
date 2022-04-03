@@ -63,11 +63,11 @@ public class ComplainController {
 //				.orElseThrow(() -> new ResourceNotFoundException("Complain not exist with complain_id :" + id));
 		return ResponseEntity.ok(complain);
 	}
-	
+
 	@GetMapping("/byUserId/{id}")
 	public ResponseEntity<Complain> getComplainById1(@PathVariable int id) {
-		
-		Complain c = complainServiceImpl.findLLBYUserId(id);
+
+		Complain c = complainServiceImpl.findComplainBYUserId(id);
 		System.out.println(c);
 		if (c == null) {
 			return (ResponseEntity<Complain>) Response.error("Complain not exist with user_id :" + id);

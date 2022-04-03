@@ -20,17 +20,23 @@ public class VehicleRegistrationServiceImpl {
 	VehicleRegistrationDao vehicleRegistrationDao;
 	
 	public VehicleRegistration findBYId(int reg_id) {
+		
 		VehicleRegistration vehicleRegistration=vehicleRegistrationDao.findByid(reg_id);
 		return vehicleRegistration;
+		
 	}
 	
 	public List<VehicleRegistration> findAllVehicleReg(){
+		
 		List<VehicleRegistration>vehicleRegList=vehicleRegistrationDao.findAll();
 		return vehicleRegList;
+		
 	}
 	
 	public VehicleRegistration saveVehicleReg(VehicleRegistration vehicleRegistration) {
+		
 		VehicleRegistration newVehicleReg=findBYId(vehicleRegistration.getId());
+		
 		if(newVehicleReg != null) {
 			
 //				if(findByregistration_no(vehicleRegistration.getRegistration_no())!=null) {
@@ -38,7 +44,8 @@ public class VehicleRegistrationServiceImpl {
 //				}
 			return null;
 		}
-		VehicleRegistration vehicleRegistration2=vehicleRegistrationDao.save(vehicleRegistration);
+		VehicleRegistration vehicleRegistration2 = vehicleRegistrationDao.save(vehicleRegistration);
+		
 		return vehicleRegistration;
 	}
 	
@@ -48,9 +55,6 @@ public class VehicleRegistrationServiceImpl {
 	{
 		vehicleRegistrationDao.updateRc(registration_no, insurance_status, status, id);
 	}
-	
-	
-	
 	
 	
 	public void deleteRC(VehicleRegistration RC) {
@@ -73,7 +77,7 @@ public class VehicleRegistrationServiceImpl {
 	}
 	
 	
-	public VehicleRegistration findLLBYUserId(int user_id) {
+	public VehicleRegistration findRCBYUserId(int user_id) {
 
 		int vrId = vehicleRegistrationDao.findIdByUserId(user_id);
 

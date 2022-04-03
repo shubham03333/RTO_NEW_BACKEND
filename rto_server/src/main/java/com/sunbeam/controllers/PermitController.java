@@ -67,7 +67,7 @@ public class PermitController {
 	@GetMapping("/byUserId1/{id}")
 	public ResponseEntity<Permit> getPermitById11(@PathVariable int id) {
 
-		Permit p = permitServiceImpl.findLLBYUserId(id);
+		Permit p = permitServiceImpl.findPermitBYUserId(id);
 		System.out.println(p);
 		if (p == null) {
 			return (ResponseEntity<Permit>) Response.error("Permit not exist with user_id :" + id);
@@ -170,7 +170,7 @@ public class PermitController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Permit> updateUser(@PathVariable int id, @RequestBody Permit permission)
+	public ResponseEntity<Permit> updatePermit(@PathVariable int id, @RequestBody Permit permission)
 			throws MessagingException {
 		Permit permit = permitServiceImpl.findBYId(id);
 		if (permit == null) {

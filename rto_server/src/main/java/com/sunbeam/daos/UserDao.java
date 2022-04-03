@@ -3,9 +3,12 @@ package com.sunbeam.daos;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sunbeam.entities.User;
 
+
+@Transactional
 public interface UserDao extends JpaRepository<User,Integer>{
 	
 	User findById(int id);
@@ -30,9 +33,22 @@ public interface UserDao extends JpaRepository<User,Integer>{
 //	  @Query("SELECT f.data FROM DatabaseFile f INNER JOIN f.User u  ON f.id=u.photo_id WHERE u.id=?1")
 //	  byte[]  findPhotoById(int  user_id);
 	  
+//		@Modifying
+//		@Query("UPDATE User u SET u.address=?1,u.mobile_no=?2,u.password=?3  WHERE u.id=?4")
+//		public void updateUser(String address, long mobile_no,String password,int id);
+	  
+	  @Modifying
+		@Query("UPDATE User u SET u.address=?1,u.mobile_no=?2,u.password=?3,u.status=?4  WHERE u.id=?5")
+		public void updateUser(String address, long mobile_no,String password,String status,int id);
+		
+		
 		@Modifying
-		@Query("UPDATE User u SET u.address=?1,u.mobile_no=?2,u.password=?3  WHERE u.id=?4")
-		public void updateUser(String address, long mobile_no,String password,int id);
+		@Query("UPDATE User u SET u.password=?1  WHERE u.id=?2")
+		public void updateUserPassword(String password,int id);
+		
+		@Modifying
+		@Query("UPDATE User u SET u.status=?1  WHERE u.id=?2")
+		public void updateUserStatus(String status,int id);
 		
 		 @Query("select count(*) from User u")
 			Integer userCount();

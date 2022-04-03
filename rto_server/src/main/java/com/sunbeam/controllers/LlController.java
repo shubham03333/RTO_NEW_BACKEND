@@ -30,11 +30,6 @@ import com.sunbeam.services.EmailSenderServiceImpl;
 import com.sunbeam.services.LlServiceImpl;
 import com.sunbeam.services.UserServiceImpl;
 
-
-
-
-
-
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/ll/")
@@ -139,7 +134,7 @@ public class LlController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<LearningLicence> updateUser(@PathVariable int id, @RequestBody LearningLicence llDetails) throws MessagingException {
+	public ResponseEntity<LearningLicence> updateLL(@PathVariable int id, @RequestBody LearningLicence llDetails) throws MessagingException {
 		LearningLicence ll = llServiceImpl.findBYId(id);
 		if (ll == null) {
 			return (ResponseEntity<LearningLicence>) Response.error("LearningLicence not exist with temp_ll_id :" + id);
@@ -179,10 +174,10 @@ if (ll.getStatus().equalsIgnoreCase("Approved")) {
 	
 	@GetMapping("/byUserIdforcert/{id}")
 	public ResponseEntity<LearningLicence> getLearningLicenceByUserIdforcerti(@PathVariable int id) {
+		
 		try {
 			
 			List<Integer> llids = llDao.findIdfrommulByUserId(id);
-//			System.out.println(ll);
 			
 			for (Integer integer : llids) {
 				
@@ -196,10 +191,11 @@ if (ll.getStatus().equalsIgnoreCase("Approved")) {
 			return ResponseEntity.ok(ll);
 			
 		} catch (Exception e) {
+			
 			return (ResponseEntity<LearningLicence>) Response.error("You have not applied for LL Yet !");
+			
 		}
-		
-	
+
 	}
 	
 	

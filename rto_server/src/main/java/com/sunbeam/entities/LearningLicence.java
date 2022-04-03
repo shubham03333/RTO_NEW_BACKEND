@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.sunbeam.services.UserServiceImpl;
 
 @Entity
-//@Table(name = "ll_table",uniqueConstraints = @UniqueConstraint(name= "ltempLLNo",columnNames = {"tempLLNo"} ))
 @Table(name = "ll_table")
 public class LearningLicence {
 	
@@ -55,9 +54,6 @@ public class LearningLicence {
 		
 	}
 
-
-	
-
 	public LearningLicence(int id, int tempLLNo, String rto, Date issue_date, Date expiry_date, String l_category,
 			int payment_id, int user_id, String status, User user, Payment payment) {
 		this.id = id;
@@ -72,9 +68,6 @@ public class LearningLicence {
 		this.user = user;
 		this.payment = payment;
 	}
-
-
-
 
 	public int getId() {
 		return id;
@@ -177,5 +170,4 @@ public class LearningLicence {
 	}
 
 	
-		
 }

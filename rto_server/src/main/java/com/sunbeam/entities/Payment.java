@@ -37,35 +37,32 @@ public class Payment {
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private VehicleRegistration vehicleRegistration;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	private VehicleTransfer vehicleTransfer;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	private Puc puc;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	private Permit permit;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	private LearningLicence learningLicence;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	private DrivingLicence drivingLicence;
-	
-	
+
 	private int vehicleRegistration_id;
-	
+
 	private int learningLicence_id;
-	
+
 	private int drivingLicence_id;
-	
+
 	private String lcategory;
-	
 
 	public Payment() {
 	}
-
 
 	public Payment(int id, String payment_for, String payment_mode, double amount, int user_id, Date payment_date,
 			User user, VehicleRegistration vehicleRegistration, VehicleTransfer vehicleTransfer, Puc puc, Permit permit,
@@ -145,140 +142,86 @@ public class Payment {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
 
 	public int getVehicleRegistration_id() {
 		return vehicleRegistration_id;
 	}
 
-
-
 	public void setVehicleRegistration_id(int vehicleRegistration_id) {
 		this.vehicleRegistration_id = vehicleRegistration_id;
 	}
-
-
 
 	public String getLcategory() {
 		return lcategory;
 	}
 
-
-
 	public void setLcategory(String lcategory) {
 		this.lcategory = lcategory;
 	}
-
-	
-
 
 	public VehicleRegistration getVehicleRegistration() {
 		return vehicleRegistration;
 	}
 
-
-
 	public void setVehicleRegistration(VehicleRegistration vehicleRegistration) {
 		this.vehicleRegistration = vehicleRegistration;
 	}
-
-
 
 	public VehicleTransfer getVehicleTransfer() {
 		return vehicleTransfer;
 	}
 
-
-
 	public void setVehicleTransfer(VehicleTransfer vehicleTransfer) {
 		this.vehicleTransfer = vehicleTransfer;
 	}
-
-
 
 	public Puc getPuc() {
 		return puc;
 	}
 
-
-
 	public void setPuc(Puc puc) {
 		this.puc = puc;
 	}
-
-
 
 	public Permit getPermit() {
 		return permit;
 	}
 
-
-
 	public void setPermit(Permit permit) {
 		this.permit = permit;
 	}
-
-
 
 	public LearningLicence getLearningLicence() {
 		return learningLicence;
 	}
 
-
-
 	public void setLearningLicence(LearningLicence learningLicence) {
 		this.learningLicence = learningLicence;
 	}
-
-
 
 	public DrivingLicence getDrivingLicence() {
 		return drivingLicence;
 	}
 
-
-
 	public void setDrivingLicence(DrivingLicence drivingLicence) {
 		this.drivingLicence = drivingLicence;
 	}
-
-
-
 
 	public int getLearningLicence_id() {
 		return learningLicence_id;
 	}
 
-
-
-
-
-
 	public void setLearningLicence_id(int learningLicence_id) {
 		this.learningLicence_id = learningLicence_id;
 	}
-
-
-
-
-
 
 	public int getdrivingLicence_id() {
 		return drivingLicence_id;
 	}
 
-
-
-
-
-
 	public void setdrivingLicence_id(int ddrivingLicence_id) {
 		this.drivingLicence_id = ddrivingLicence_id;
 	}
-
-
-
-
 	@Override
 	public String toString() {
 		return String.format(
@@ -287,7 +230,5 @@ public class Payment {
 				vehicleTransfer, puc, permit, learningLicence, drivingLicence, vehicleRegistration_id,
 				learningLicence_id, drivingLicence_id, lcategory);
 	}
-
-
 
 }

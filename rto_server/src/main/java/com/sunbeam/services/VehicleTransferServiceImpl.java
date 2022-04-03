@@ -53,7 +53,7 @@ public class VehicleTransferServiceImpl {
 	}
 	
 
-	public VehicleTransfer findLLBYUserId(int user_id) {
+	public VehicleTransfer findVTBYUserId(int user_id) {
 
 		int vtId = transferDao.findIdByUserId(user_id);
 

@@ -73,7 +73,7 @@ public class PucController {
 	@GetMapping("/byUserId1/{id}")
 	public ResponseEntity<Puc> getPucById11(@PathVariable int id) {
 
-		Puc p = pucServiceImpl.findLLBYUserId(id);
+		Puc p = pucServiceImpl.findPucBYUserId(id);
 	
 		System.out.println(p);
 		if (p == null) {
@@ -107,12 +107,14 @@ public class PucController {
 	
 	@GetMapping("/rcNo/{RcNo}")
 	public ResponseEntity<Puc> getPucStatusByRcNo(@PathVariable String RcNo) {
+		
 		try {
+			
 			int p = pucDao.findIdByregistration_no(RcNo);
 			System.out.println(p);
 			Puc preg = pucServiceImpl.findBYId(p);
-
 			return ResponseEntity.ok(preg);
+			
 		} catch (Exception e) {
 			return (ResponseEntity<Puc>) Response.error("RC not exist with registration number");
 		}
@@ -150,7 +152,7 @@ public class PucController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Puc> updateUser(@PathVariable int id, @RequestBody Puc pucDetails) throws MessagingException {
+	public ResponseEntity<Puc> updatePuc(@PathVariable int id, @RequestBody Puc pucDetails) throws MessagingException {
 		Puc puc = pucServiceImpl.findBYId(id);
 		if (puc == null) {
 			return (ResponseEntity<Puc>) Response.error("Puc not exist with puc_id :" + id);

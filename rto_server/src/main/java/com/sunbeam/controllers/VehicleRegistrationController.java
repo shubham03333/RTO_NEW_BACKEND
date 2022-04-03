@@ -67,7 +67,7 @@ public class VehicleRegistrationController {
 	@GetMapping("/byUserId1/{id}")
 	public ResponseEntity<VehicleRegistration> getVehicleRegById11(@PathVariable int id) {
 
-		VehicleRegistration vr = registrationServiceImpl.findLLBYUserId(id);
+		VehicleRegistration vr = registrationServiceImpl.findRCBYUserId(id);
 		System.out.println(vr);
 		if (vr == null) {
 			return (ResponseEntity<VehicleRegistration>) Response.error("RC not exist with user_id :" + id);
@@ -76,7 +76,7 @@ public class VehicleRegistrationController {
 		return ResponseEntity.ok(vr);
 	}
 
-	// ############################################## UNDER TESTING
+	// ############################################## UNDER TESTING for count
 	// ###############################################
 
 	@GetMapping("/byUserId/{id}")
@@ -99,21 +99,18 @@ public class VehicleRegistrationController {
 
 	@GetMapping("/rcNo/{RcNo}")
 	public ResponseEntity<VehicleRegistration> getRcStatusByRcNo(@PathVariable String RcNo) {
-try {
-	int vr = registrationDao.findIdByregistration_no(RcNo);
-	System.out.println(vr);
-	VehicleRegistration vehicleReg = registrationServiceImpl.findBYId(vr);
+		try {
+			int vr = registrationDao.findIdByregistration_no(RcNo);
+			System.out.println(vr);
+			VehicleRegistration vehicleReg = registrationServiceImpl.findBYId(vr);
 
-	return ResponseEntity.ok(vehicleReg);
-} catch (Exception e) {
-	return (ResponseEntity<VehicleRegistration>) Response.error("RC not exist with registration number");
-}
-			
-		
-}
-	
-	
-	
+			return ResponseEntity.ok(vehicleReg);
+		} catch (Exception e) {
+			return (ResponseEntity<VehicleRegistration>) Response.error("RC not exist with registration number");
+		}
+
+	}
+
 	@PostMapping("/add_rc")
 	public ResponseEntity<?> addRc(@RequestBody VehicleRegistration vehiclereg) {
 
@@ -176,19 +173,19 @@ try {
 		}
 		User user = userServiceImpl.findUserFromdbById(rc.getUser_id());
 		System.out.println(user);
-	
-			
-	
-	try {
-		if(registrationDao.findIdByregistration_no(rcDetails.getRegistration_no())>0) {
-			return (ResponseEntity<VehicleRegistration>) Response.error("Registration No. already Asigned asign new Registration Number");
+
+		try {
+			if (registrationDao.findIdByregistration_no(rcDetails.getRegistration_no()) > 0) {
+				return (ResponseEntity<VehicleRegistration>) Response
+						.error("Registration No. already Asigned asign new Registration Number");
+			}
+		} catch (Exception e) {
+			rc.setRegistration_no(rcDetails.getRegistration_no());
 		}
-	} catch (Exception e) {
-		rc.setRegistration_no(rcDetails.getRegistration_no());
-	}
-		
+
 		rc.setInsurance_status(rcDetails.getInsurance_status());
 		rc.setPuc_status(rcDetails.getPuc_status());
+		rc.setValidTill(rcDetails.getValidTill());
 //		rc.setStatus(rcDetails.getStatus());
 
 		System.out.println(rc.getRegistration_no());
@@ -199,13 +196,15 @@ try {
 			rc.setStatus("pending..");
 		}
 		registrationServiceImpl.updateRc(rc.getRegistration_no(), rc.getInsurance_status(), rc.getStatus(), rc.getId());
-//EMAIL SERVICE
+		//EMAIL SERVICE
 		if (rc.getStatus().equalsIgnoreCase("Approved")) {
 			// if approved then sends the mail to the applicant
 			emailSenderService.sendSimpleEmail(user.getEmail(), "Dear " + user.getName() + ",\n\n"
 					+ "Congratulations, Your RC is ready .\n"
-					+ "You can download copy of it from RTO MANAGEMENT WEBSITE BY Entering Registration id as [ " + rc.getId()+" ] and also Your Rc will be delivered within 7 working days at yor registered Address.\n"
-					+ "\n" + "Warm Regards,\n" + "RTO Info Group,\n", "Your RC approved");
+					+ "You can download copy of it from RTO MANAGEMENT WEBSITE BY Entering Registration id as [ "
+					+ rc.getId()
+					+ " ] and also Your Rc will be delivered within 7 working days at your registered Address.\n" + "\n"
+					+ "Warm Regards,\n" + "RTO Info Group,\n", "Your RC approved");
 		}
 		return ResponseEntity.ok(rc);
 	}

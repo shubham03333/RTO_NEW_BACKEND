@@ -48,7 +48,7 @@ public VehicleRegistration findVRegistrationByRegId(int regId) {
 		return vehicleRegistrationServiceImpl.findBYId(regId);
 	}
 
-public Puc findLLBYUserId(int user_id) {
+public Puc findPucBYUserId(int user_id) {
 
 	int pId = pucDao.findIdByUserId(user_id);
 

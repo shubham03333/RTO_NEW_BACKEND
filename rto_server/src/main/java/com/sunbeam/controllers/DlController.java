@@ -83,7 +83,7 @@ public class DlController {
 		
 		
 		try {
-			Optional<DrivingLicence> dl = dlServiceImpl.findLLBYUserId(id);
+			Optional<DrivingLicence> dl = dlServiceImpl.findDLBYUserId(id);
 			
 
 			System.out.println(dl);
@@ -173,7 +173,7 @@ public class DlController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<DrivingLicence> updateUser(@PathVariable int id, @RequestBody DrivingLicence dlDetails) throws MessagingException {
+	public ResponseEntity<DrivingLicence> updateDL(@PathVariable int id, @RequestBody DrivingLicence dlDetails) throws MessagingException {
 		DrivingLicence dl = dlServiceImpl.findBYId(id);
 		if (dl == null) {
 			return (ResponseEntity<DrivingLicence>) Response.error("DrivingLicence not exist with dl_id :" + id);

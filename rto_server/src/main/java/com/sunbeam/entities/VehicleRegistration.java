@@ -37,6 +37,12 @@ public class VehicleRegistration {
 	private String vehicle_class;
 	@Temporal(TemporalType.DATE)
 	private Date purchase_date;
+	
+	
+	@Temporal(TemporalType.DATE)
+	private Date validTill;
+	
+	
 	private String fuel_type;
 	private String engine_no;
 	private int engine_capacity;
@@ -48,49 +54,39 @@ public class VehicleRegistration {
 	private int payment_id = 3;
 	private String status = "Pending";
 	private int transaction_id;
-
-//	@JsonIgnore
+	
 	private int user_id;
+	
+	
 //	@OneToOne(cascade = CascadeType.ALL)
 //	@JoinColumn(name = "aadhar_no")
 //	private  User user;
 //	@OneToOne(mappedBy = "vehicleRegistration")
 //	private VehicleTransfer vehicleTransfer;
+	
 	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "registration_id")
 	private VehicleTransfer vehicletransfer;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "vehicleRegistration")
 	private List<Permit> permitList;
 
-//	@JsonIgnore
-//	@OneToOne(mappedBy = "vehicleRegistration")
-//	private Puc puc;
-//	
-
-//	@JsonIgnore
-//	@OneToOne(mappedBy = "vehicleRegistration")
-//	@JoinColumn(name = "payment_no")
-//	private Payment payment;
 
 	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "transaction_no")
 	private Payment payment;
-	
-	
-	
+		
 
 	public VehicleRegistration() {
 	}
 
-
-
 	public VehicleRegistration(int id, String registration_no, String owner, String make, String chassis_no,
-			String vehicle_class, Date purchase_date, String fuel_type, String engine_no, int engine_capacity,
-			int insurance_status, int puc_status, String hypothecated_to, int wheels, int seat_capacity, int payment_id,
-			String status, int transaction_id, int user_id, VehicleTransfer vehicletransfer, List<Permit> permitList,
-			Payment payment) {
+			String vehicle_class, Date purchase_date, Date validTill, String fuel_type, String engine_no,
+			int engine_capacity, int insurance_status, int puc_status, String hypothecated_to, int wheels,
+			int seat_capacity, int payment_id, String status, int transaction_id, int user_id,
+			VehicleTransfer vehicletransfer, List<Permit> permitList, Payment payment) {
 		this.id = id;
 		this.registration_no = registration_no;
 		this.owner = owner;
@@ -98,6 +94,7 @@ public class VehicleRegistration {
 		this.chassis_no = chassis_no;
 		this.vehicle_class = vehicle_class;
 		this.purchase_date = purchase_date;
+		this.validTill = validTill;
 		this.fuel_type = fuel_type;
 		this.engine_no = engine_no;
 		this.engine_capacity = engine_capacity;
@@ -114,6 +111,7 @@ public class VehicleRegistration {
 		this.permitList = permitList;
 		this.payment = payment;
 	}
+
 
 
 
@@ -297,16 +295,28 @@ public class VehicleRegistration {
 
 
 
-	@Override
-	public String toString() {
-		return String.format(
-				"VehicleRegistration [id=%s, registration_no=%s, owner=%s, make=%s, chassis_no=%s, vehicle_class=%s, purchase_date=%s, fuel_type=%s, engine_no=%s, engine_capacity=%s, insurance_status=%s, puc_status=%s, hypothecated_to=%s, wheels=%s, seat_capacity=%s, payment_id=%s, status=%s, transaction_id=%s, user_id=%s, vehicletransfer=%s, permitList=%s, payment=%s]",
-				id, registration_no, owner, make, chassis_no, vehicle_class, purchase_date, fuel_type, engine_no,
-				engine_capacity, insurance_status, puc_status, hypothecated_to, wheels, seat_capacity, payment_id,
-				status, transaction_id, user_id, vehicletransfer, permitList, payment);
+	public Date getValidTill() {
+		return validTill;
 	}
 
 
+
+
+	public void setValidTill(Date validTill) {
+		this.validTill = validTill;
+	}
+
+
+
+
+	@Override
+	public String toString() {
+		return String.format(
+				"VehicleRegistration [id=%s, registration_no=%s, owner=%s, make=%s, chassis_no=%s, vehicle_class=%s, purchase_date=%s, validTill=%s, fuel_type=%s, engine_no=%s, engine_capacity=%s, insurance_status=%s, puc_status=%s, hypothecated_to=%s, wheels=%s, seat_capacity=%s, payment_id=%s, status=%s, transaction_id=%s, user_id=%s, vehicletransfer=%s, permitList=%s, payment=%s]",
+				id, registration_no, owner, make, chassis_no, vehicle_class, purchase_date, validTill, fuel_type,
+				engine_no, engine_capacity, insurance_status, puc_status, hypothecated_to, wheels, seat_capacity,
+				payment_id, status, transaction_id, user_id, vehicletransfer, permitList, payment);
+	}
 
 
 }

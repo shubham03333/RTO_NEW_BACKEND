@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "vehicle_transfer")
 public class VehicleTransfer {
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "transfer_id")
@@ -23,7 +23,6 @@ public class VehicleTransfer {
 	private String transfer_no;
 	private String new_owner;
 	private long new_owner_aadhar;
-
 	private String new_owner_email;
 	private long new_owner_mobile;
 	private String status = "Pending";
@@ -32,8 +31,6 @@ public class VehicleTransfer {
 	private String registration_no;
 
 	private int user_id;
-
-	
 
 //	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
@@ -44,14 +41,11 @@ public class VehicleTransfer {
 	@JoinColumn(name = "transaction_no")
 	private Payment payment;
 	
-	
-	
-	
 //	@Column(insertable = false)
 
 	public VehicleTransfer() {
+		
 	}
-
 
 
 	public VehicleTransfer(int id, String transfer_no, String new_owner, long new_owner_aadhar, String new_owner_email,
@@ -184,8 +178,4 @@ public class VehicleTransfer {
 				registration_id, registration_no, user_id, vehicleRegistration1, payment);
 	}
 	
-	
-
-
-
 }

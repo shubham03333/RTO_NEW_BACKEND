@@ -73,10 +73,10 @@ public class PaymentController {
 
 	@Autowired
 	private LlServiceImpl llServiceImpl;
-	
+
 	@Autowired
 	private LlDao llDao;
-	
+
 	@Autowired
 	private DlDao dlDao;
 
@@ -95,8 +95,10 @@ public class PaymentController {
 			return (ResponseEntity<Payment>) Response.error("Payment not exist with payment_refno :" + id);
 		}
 		User user = userServiceImpl.findUserFromdbById(payment.getUser_id());
+		
 		payment.setUser(user);
-		System.out.println(payment.getUser());
+		
+//		System.out.println(payment.getUser());
 //				.orElseThrow(() -> new ResourceNotFoundException("Payment not exist with payment_refno :" + id));
 		return ResponseEntity.ok(payment);
 	}
@@ -104,7 +106,7 @@ public class PaymentController {
 	@GetMapping("/byUserId/{id}")
 	public ResponseEntity<Payment> getPaymentById1(@PathVariable int id) {
 
-		Payment p = paymentServiceImpl.findLLBYUserId(id);
+		Payment p = paymentServiceImpl.findPaymentBYUserId(id);
 		System.out.println(p);
 		if (p == null) {
 			return (ResponseEntity<Payment>) Response.error("Payment not exist with user_id  :" + id);
@@ -122,103 +124,82 @@ public class PaymentController {
 		int userId = 0;
 
 		userId = payment.getUser_id();
-		
+
 		try {
-			
-		
 
-		if (payment.getPayment_for().equals("RC")) {
+			if (payment.getPayment_for().equals("RC")) {
 
-			List<VehicleRegistration> vr = new ArrayList<>();
-			vr = vehicleRegistrationServiceImpl.findAllVehicleReg();
-			for (VehicleRegistration vehiclereg : vr) {
+				List<VehicleRegistration> vr = new ArrayList<>();
+				vr = vehicleRegistrationServiceImpl.findAllVehicleReg();
+				for (VehicleRegistration vehiclereg : vr) {
 
-				if (vehiclereg.getUser_id() == userId && vehiclereg.getId() == payment.getVehicleRegistration_id()) {
-					vehiclereg.setPayment(payment);
-					System.out.println(vehiclereg.getPayment());
-					vehiclereg.setTransaction_id(payment.getId());
+					if (vehiclereg.getUser_id() == userId
+							&& vehiclereg.getId() == payment.getVehicleRegistration_id()) {
+						vehiclereg.setPayment(payment);
+						System.out.println(vehiclereg.getPayment());
+						vehiclereg.setTransaction_id(payment.getId());
 
+					}
 				}
+
+			} else if (payment.getPayment_for().equals("Vehicle transfer")) {
+
+				List<VehicleTransfer> vt = new ArrayList<>();
+				vt = vehicleTransferServiceImpl.findAllVehicleTransfer();
+				for (VehicleTransfer vehicleTran : vt) {
+
+					if (vehicleTran.getUser_id() == userId
+							&& vehicleTran.getRegistration_id() == payment.getVehicleRegistration_id()) {
+						vehicleTran.setPayment(payment);
+						System.out.println(vehicleTran.getPayment());
+
+					}
+				}
+			} else if (payment.getPayment_for().equals("puc")) {
+				List<Puc> pu = new ArrayList<>();
+				pu = pucServiceImpl.findAllPucs();
+				for (Puc puc : pu) {
+
+					if (puc.getUser_id() == userId && puc.getRegistration_id() == payment.getVehicleRegistration_id()) {
+						puc.setPayment(payment);
+						System.out.println(puc.getPayment());
+
+					}
+				}
+			} else if (payment.getPayment_for().equals("Permit")) {
+				List<Permit> per = new ArrayList<>();
+				per = permitServiceImpl.findAllPermits();
+				for (Permit permit : per) {
+
+					if (permit.getUser_id() == userId
+							&& permit.getRegistration_id() == payment.getVehicleRegistration_id()) {
+						permit.setPayment(payment);
+						System.out.println(permit.getPayment());
+
+					}
+				}
+			} else if (payment.getPayment_for().equals("DL")) {
+
+				DrivingLicence dl = dlDao.findById(payment.getdrivingLicence_id());
+				dl.setPayment(payment);
+
+			} else if (payment.getPayment_for().equals("LL")) {
+
+				LearningLicence ll = llDao.findByid(payment.getLearningLicence_id());
+				ll.setPayment(payment);
 			}
 
-		} else if (payment.getPayment_for().equals("Vehicle transfer")) {
+			// #############################################
 
-			List<VehicleTransfer> vt = new ArrayList<>();
-			vt = vehicleTransferServiceImpl.findAllVehicleTransfer();
-			for (VehicleTransfer vehicleTran : vt) {
-
-				if (vehicleTran.getUser_id() == userId
-						&& vehicleTran.getRegistration_id() == payment.getVehicleRegistration_id()) {
-					vehicleTran.setPayment(payment);
-					System.out.println(vehicleTran.getPayment());
-
-				}
-			}
-		} else if (payment.getPayment_for().equals("puc")) {
-			List<Puc> pu = new ArrayList<>();
-			pu = pucServiceImpl.findAllPucs();
-			for (Puc puc : pu) {
-
-				if (puc.getUser_id() == userId && puc.getRegistration_id() == payment.getVehicleRegistration_id()) {
-					puc.setPayment(payment);
-					System.out.println(puc.getPayment());
-
-				}
-			}
-		} else if (payment.getPayment_for().equals("Permit")) {
-			List<Permit> per = new ArrayList<>();
-			per = permitServiceImpl.findAllPermits();
-			for (Permit permit : per) {
-
-				if (permit.getUser_id() == userId
-						&& permit.getRegistration_id() == payment.getVehicleRegistration_id()) {
-					permit.setPayment(payment);
-					System.out.println(permit.getPayment());
-
-				}
-			}
-		} else if (payment.getPayment_for().equals("DL")) {
-//			List<DrivingLicence> dl = new ArrayList<>();
-//			dl = dlServiceImpl.findAllDls();
-//			for (DrivingLicence drivingl : dl) {
-//
-//				if (drivingl.getUser_id() == userId && drivingl.getL_category() == payment.getLcategory()) {
-//					drivingl.setPayment(payment);
-//					System.out.println(drivingl.getPayment());
-//
-//				}
-//			}
-			
-			
-			DrivingLicence dl= dlDao.findById(payment.getdrivingLicence_id());
-			dl.setPayment(payment);
-			
-		} else if (payment.getPayment_for().equals("LL")) {
-//			List<LearningLicence> ll = new ArrayList<>();
-//			ll = llServiceImpl.findAllLls();
-//			for (LearningLicence learnli : ll) {
-//
-//				if (learnli.getUser_id() == userId && learnli.getL_category() == payment.getLcategory()) {
-//					learnli.setPayment(payment);
-//					System.out.println(learnli.getPayment());
-//
-//				}
-//			}
-			
-			LearningLicence ll= llDao.findByid(payment.getLearningLicence_id());
-			ll.setPayment(payment);
-		}
-
-		// #############################################
-
-		payment.setUser(userServiceImpl.findUserFromdbById(payment.getUser_id()));
+			payment.setUser(userServiceImpl.findUserFromdbById(payment.getUser_id()));
 //		System.out.println(result);
-		if (payment == null)
-			return Response.error("Payment is empty");
-		return Response.success(payment);
+			if (payment == null)
+				return Response.error("Payment is empty");
+			return Response.success(payment);
 		} catch (Exception e) {
-			return (ResponseEntity<Payment>) Response.error("Something went wrong please check your payment for option!");
-		
+			return (ResponseEntity<Payment>) Response
+					.error("Something went wrong please check your payment for option!");
+
 		}
 	}
 
@@ -231,6 +212,7 @@ public class PaymentController {
 //				.orElseThrow(() -> new ResourceNotFoundException("Payment not exist with payment_refno :" + id));
 
 		paymentDao.delete(payment);
+		
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("deleted", Boolean.TRUE);
 		return ResponseEntity.ok(response);
@@ -242,7 +224,6 @@ public class PaymentController {
 		if (payment == null) {
 			return (ResponseEntity<Payment>) Response.error("Payment not exist with payment_refno :" + id);
 		}
-//				.orElseThrow(() -> new ResourceNotFoundException("User not exist with id :" + id));
 
 //		payment.setPayment_id(paymentDetails.getPayment_id());
 		payment.setPayment_mode(paymentDetails.getPayment_mode());

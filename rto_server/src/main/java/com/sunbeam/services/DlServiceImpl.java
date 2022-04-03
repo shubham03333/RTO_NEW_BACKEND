@@ -53,7 +53,7 @@ public class DlServiceImpl {
 		}
 	}
 
-	public Optional<DrivingLicence> findLLBYUserId(int user_id) {
+	public Optional<DrivingLicence> findDLBYUserId(int user_id) {
 
 		Integer dId = dlDao.findIdByUserId(user_id);
 		

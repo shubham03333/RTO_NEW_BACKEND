@@ -1,11 +1,14 @@
 package com.sunbeam.daos;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.sunbeam.entities.VehicleRegistration;
+
+
 @Repository
 public interface VehicleRegistrationDao extends JpaRepository<VehicleRegistration,Integer> {
 	
@@ -19,7 +22,7 @@ public interface VehicleRegistrationDao extends JpaRepository<VehicleRegistratio
   @Query ("select vr.id from VehicleRegistration vr WHERE vr.user_id = ?1")
   int findIdByUserId(int id);
   
-  @Modifying
+  	@Modifying
 	@Query("UPDATE VehicleRegistration vr SET vr.registration_no=?1, vr.insurance_status=?2,vr.status=?3  WHERE vr.id=?4")
 	public void updateRc(String registration_no, int insurance_status,String status,int id);
   

@@ -41,7 +41,7 @@ public class PaymentServiceImpl {
 
 	}
 
-	public Payment findLLBYUserId(int user_id) {
+	public Payment findPaymentBYUserId(int user_id) {
 
 		int pId = paymentDao.findIdByUserId(user_id);
 

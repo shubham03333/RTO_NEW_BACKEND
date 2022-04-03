@@ -78,7 +78,7 @@ public class VehicleTransferController {
 	@GetMapping("/byUserId1/{id}")
 	public ResponseEntity<VehicleTransfer> getVehicleTransferById11(@PathVariable int id) {
 
-		VehicleTransfer vt = vehicleTransferServiceImpl.findLLBYUserId(id);
+		VehicleTransfer vt = vehicleTransferServiceImpl.findVTBYUserId(id);
 		System.out.println(vt);
 		if (vt == null) {
 			return (ResponseEntity<VehicleTransfer>) Response.error("Transfer not exist with user_id :" + id);
