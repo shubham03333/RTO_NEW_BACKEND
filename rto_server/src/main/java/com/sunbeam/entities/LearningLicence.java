@@ -50,12 +50,17 @@ public class LearningLicence {
 	@JoinColumn(name = "transaction_no")
 	private Payment payment;
 
+	
+	private int quizMarks=0;
+	
+	
 	public LearningLicence() {
 		
 	}
 
+
 	public LearningLicence(int id, int tempLLNo, String rto, Date issue_date, Date expiry_date, String l_category,
-			int payment_id, int user_id, String status, User user, Payment payment) {
+			int payment_id, int user_id, String status, User user, Payment payment, int quizMarks) {
 		this.id = id;
 		this.tempLLNo = tempLLNo;
 		this.rto = rto;
@@ -67,7 +72,9 @@ public class LearningLicence {
 		this.status = status;
 		this.user = user;
 		this.payment = payment;
+		this.quizMarks = quizMarks;
 	}
+
 
 	public int getId() {
 		return id;
@@ -159,15 +166,24 @@ public class LearningLicence {
 		this.payment = payment;
 	}
 
+	public int getQuizMarks() {
+		return quizMarks;
+	}
 
+
+	public void setQuizMarks(int quizMarks) {
+		this.quizMarks = quizMarks;
+	}
 
 
 	@Override
 	public String toString() {
 		return String.format(
-				"LearningLicence [id=%s, tempLLNo=%s, rto=%s, issue_date=%s, expiry_date=%s, L_category=%s, payment_id=%s, user_id=%s, status=%s, user=%s, payment=%s]",
-				id, tempLLNo, rto, issue_date, expiry_date, L_category, payment_id, user_id, status, user, payment);
+				"LearningLicence [id=%s, tempLLNo=%s, rto=%s, issue_date=%s, expiry_date=%s, L_category=%s, payment_id=%s, user_id=%s, status=%s, user=%s, payment=%s, quizMarks=%s]",
+				id, tempLLNo, rto, issue_date, expiry_date, L_category, payment_id, user_id, status, user, payment,
+				quizMarks);
 	}
+
 
 	
 }

@@ -11,6 +11,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,6 +39,7 @@ import com.sunbeam.payload.Responsef;
 import com.sunbeam.services.DatabaseFileService;
 import com.sunbeam.services.EmailSenderServiceImpl;
 import com.sunbeam.services.UserServiceImpl;
+import com.sunbeam.util.JwtUtil;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -62,17 +65,37 @@ public class UserController {
 	User user;
 
 	DatabaseFile databaseFile;
-	
+
 	@Autowired
 	private EmailSenderServiceImpl emailSenderService;
-	
-	
+
 	private int randomNumber;
-	
-	
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private JwtUtil jwtUtil;
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
+
+	@PostMapping("/authenticate")
+	public String generateToken(@RequestBody Credentials credentials) throws Exception {
+
+		try {
+
+			authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(credentials.getEmail(), credentials.getPassword()));
+			
+		} catch (Exception e) {
+			throw new Exception("Invalid username or password");
+		}
+	
+
+		return jwtUtil.generateToken(credentials.getEmail());
+
+	}
 
 	@PostMapping("/uploadFile")
 	public Responsef uploadFile(@RequestParam("file") MultipartFile file) {
@@ -90,14 +113,14 @@ public class UserController {
 		UserDTO userDto = userService.findUserByEmailAndPassword(cred);
 		if (userDto == null)
 			return Response.error("user not found");
-		
-		System.out.println("Status "+userDto.getStatus1());
+	
+		System.out.println("Status " + userDto.getStatus1());
 		return Response.success(userDto);
 	}
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> signUp(@Valid @RequestBody UserDTO userDto) {
-		
+
 		try {
 			Credentials cred = new Credentials();
 			cred.setEmail(userDto.getEmail());
@@ -106,11 +129,11 @@ public class UserController {
 			UserDTO users = userService.findUserByEmailAndPassword(cred);
 
 			UserDTO result = userService.saveUser(userDto);
-			
+
 			System.out.println(result.getPassword());
-			
+
 			return Response.success(result);
-			
+
 		} catch (Exception e) {
 
 			return Response.error("Enter valid email id or user id already registered");
@@ -125,7 +148,7 @@ public class UserController {
 			return Response.error("please upload photo");
 
 		userDto.setPhoto_id(this.fileName.getId());
-		
+
 		fileName = null;
 
 //		User userAadhar=userService.findByAadharNo(userDto.getAadhar_no());
@@ -142,8 +165,7 @@ public class UserController {
 //			databaseFileRepository.deletePhoto(this.fileName.getId());
 
 			return Response.error("Email already exists try to enter different Email");
-			
-			
+
 		} else if (result.getAadhar_no() == null) {
 			User user = userService.findUserFromdbById(result.getId());
 //			UserDTO user0 = userService.findUserById(result.getId());
@@ -228,10 +250,11 @@ public class UserController {
 //			user.setPassword(passwordEncoder.encode(UserDetails.getPassword()));
 
 //		userService.updateUser(user.getAddress(), user.getMobile_no(), user.getPassword(), user.getId());
-		userService.updateUser(user.getAddress(), user.getMobile_no(), user.getPassword(),user.getStatus() ,user.getId());
+		userService.updateUser(user.getAddress(), user.getMobile_no(), user.getPassword(), user.getStatus(),
+				user.getId());
 		return ResponseEntity.ok(user);
 	}
-	
+
 	@PutMapping("/updateStatus/{id}")
 	public ResponseEntity<User> updateUserStatus(@PathVariable int id, @RequestBody User UserDetails) {
 		User user = userService.findUserFromdbById(id);
@@ -239,15 +262,13 @@ public class UserController {
 			return (ResponseEntity<User>) Response.error("User not exist with id :" + id);
 		}
 
-	
 		user.setStatus(UserDetails.getStatus());
 //			user.setPassword(passwordEncoder.encode(UserDetails.getPassword()));
 
-		userDao.updateUserStatus(user.getStatus(),user.getId());
-		
+		userDao.updateUserStatus(user.getStatus(), user.getId());
+
 		return ResponseEntity.ok(user);
 	}
-	
 
 	// delete User rest api
 	@DeleteMapping("/{id}")
@@ -263,72 +284,66 @@ public class UserController {
 		response.put("deleted", Boolean.TRUE);
 		return ResponseEntity.ok(response);
 	}
-	
-	
 
 	@PostMapping("/forgotPasswordinit")
-	public ResponseEntity<?> forgotPassword( @RequestBody Credentials cred) throws MessagingException {
-		
+	public ResponseEntity<?> forgotPassword(@RequestBody Credentials cred) throws MessagingException {
+
 		User user = userService.findUserFromdbByEmail(cred.getEmail());
-		
-		Random random = new Random();   
-		
-		
-		randomNumber = random.nextInt(10000);  
-		
-		System.out.println("random number: "+randomNumber);
-		
+
+		Random random = new Random();
+
+		randomNumber = random.nextInt(10000);
+
+		System.out.println("random number: " + randomNumber);
+
 		if (user == null)
 			return Response.error("user not found");
-		
-		emailSenderService.sendSimpleEmail(user.getEmail(), "Dear " + user.getName() + ",\n\n"
-				+ "Your OTP for password Reset is [ " + randomNumber+ " ] .\n"
-				+ "\n" + "Warm Regards,\n" + "RTO Info Group,\n", "Password reset request");
-	
+
+		emailSenderService
+				.sendSimpleEmail(
+						user.getEmail(), "Dear " + user.getName() + ",\n\n" + "Your OTP for password Reset is [ "
+								+ randomNumber + " ] .\n" + "\n" + "Warm Regards,\n" + "RTO Info Group,\n",
+						"Password reset request");
+
 		return Response.success(user);
 	}
-	
-	
-	@PostMapping("/forgotPasswordprocess")
-	public ResponseEntity<?> forgotPasswordprocessing( @RequestBody Credentials cred) throws MessagingException {
-		
-		User user = userService.findUserFromdbByEmail(cred.getEmail());
-		
-		  if( cred.getOtp()==randomNumber) {
-			  
-			  String rawPassword = cred.getPassword();
-			  
-				String encPassword = passwordEncoder.encode(rawPassword);
-				
-			  user.setPassword(encPassword);
-			  
-//			  System.out.println("enc paasword "+encPassword);
-			  
-			  userDao.updateUserPassword(encPassword, user.getId());
 
-				if (user == null)
-					return Response.error("user not found");
-				
-				emailSenderService.sendSimpleEmail(user.getEmail(), "Dear " + user.getName() + ",\n\n"
-						+ "Your password for rto management website is successfully changed.\n"
-						+ "\n" + "Warm Regards,\n" + "RTO Info Group,\n", "Your password have been reset ");
-			
-				
-				randomNumber=0;
-				
-				return Response.success(user);
-			  
-		  }
-		  
-			return Response.error("Please enter valid otp!!!!");
-		  
-		
+	@PostMapping("/forgotPasswordprocess")
+	public ResponseEntity<?> forgotPasswordprocessing(@RequestBody Credentials cred) throws MessagingException {
+
+		User user = userService.findUserFromdbByEmail(cred.getEmail());
+
+		if (cred.getOtp() == randomNumber) {
+
+			String rawPassword = cred.getPassword();
+
+			String encPassword = passwordEncoder.encode(rawPassword);
+
+			user.setPassword(encPassword);
+
+//			  System.out.println("enc paasword "+encPassword);
+
+			userDao.updateUserPassword(encPassword, user.getId());
+
+			if (user == null)
+				return Response.error("user not found");
+
+			emailSenderService.sendSimpleEmail(user.getEmail(),
+					"Dear " + user.getName() + ",\n\n"
+							+ "Your password for rto management website is successfully changed.\n" + "\n"
+							+ "Warm Regards,\n" + "RTO Info Group,\n",
+					"Your password have been reset ");
+
+			randomNumber = 0;
+
+			return Response.success(user);
+
+		}
+
+		return Response.error("Please enter valid otp!!!!");
+
 //		System.out.println("random number: "+randomNumber);
-		
+
 	}
-	
-	
-	
-	
 
 }

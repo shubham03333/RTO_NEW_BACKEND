@@ -6,9 +6,11 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sunbeam.entities.LearningLicence;
 
+@Transactional
 public interface LlDao extends JpaRepository<LearningLicence, Integer> {
 
 	LearningLicence findByid(int id);
@@ -33,5 +35,9 @@ public interface LlDao extends JpaRepository<LearningLicence, Integer> {
 
 	@Query("select ll.id from LearningLicence ll WHERE ll.user_id = ?1 order by ll.id asc")
 	List<Integer> findIdfrommulByUserId(int id);
+	
+	@Modifying
+	@Query("UPDATE LearningLicence ll SET ll.quizMarks=?1  WHERE ll.id=?2")
+	public void updateResult(int result, int id);
 	
 }

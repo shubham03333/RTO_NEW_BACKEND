@@ -1,11 +1,15 @@
 package com.sunbeam.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +24,9 @@ import com.sunbeam.exception.UniqueContraintExeption;
 
 @Transactional
 @Service
-public class UserServiceImpl {
+public class UserServiceImpl implements UserDetailsService {
+	
+	
 	@Autowired
 	private UserDao userDao;
 
@@ -132,6 +138,17 @@ public class UserServiceImpl {
 	
 	public void updateUser(String address, long mobile_no, String password,String status, int id) {
 		userDao.updateUser(address, mobile_no, password,status, id);
+	}
+	
+	
+	//spring security
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+		User user=userDao.findByEmail(username);
+		
+		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),new ArrayList<>());
 	}
 
 }

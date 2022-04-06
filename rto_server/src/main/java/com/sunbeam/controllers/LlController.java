@@ -198,6 +198,30 @@ if (ll.getStatus().equalsIgnoreCase("Approved")) {
 
 	}
 	
+	@PutMapping("/result/{id}")
+	public ResponseEntity<?> addResult(@PathVariable int id, @RequestBody LearningLicence llDetails) {
+		
+		try {
+			
+		
+		LearningLicence ll = llServiceImpl.findBYId(id);
+		
+		ll.setQuizMarks(llDetails.getQuizMarks());
+		
+		llDao.updateResult(ll.getQuizMarks(), ll.getId());
+		
+	
+		
+//		System.out.println(result);
+		if (ll == null)
+			return Response.error("LearningLicence is empty");
+		return Response.success(ll);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return Response.error("You have not applid for LL yet");
+		}
+	}
+	
 	
 
 }
