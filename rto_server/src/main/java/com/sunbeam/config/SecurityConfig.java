@@ -60,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //		http.csrf().disable().authorizeRequests().antMatchers("/user/signin").permitAll().anyRequest()
 //		http.csrf().disable().authorizeRequests().antMatchers("/user/authenticate").permitAll().anyRequest()
 //		http.cors().and().csrf().disable().authorizeRequests().antMatchers("/user/authenticate").permitAll().anyRequest()
-		http.cors().and().csrf().disable().authorizeRequests().antMatchers("/user/*","/downloadFile/*").permitAll().anyRequest()
+		http.cors().and().csrf().disable().authorizeRequests().antMatchers("/user/*","/downloadFile/*","/complain/*").permitAll().anyRequest()
 		
 				.authenticated().and().exceptionHandling().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
