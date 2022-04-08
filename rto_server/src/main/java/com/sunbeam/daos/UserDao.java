@@ -38,8 +38,8 @@ public interface UserDao extends JpaRepository<User,Integer>{
 //		public void updateUser(String address, long mobile_no,String password,int id);
 	  
 	  @Modifying
-		@Query("UPDATE User u SET u.address=?1,u.mobile_no=?2,u.password=?3,u.status=?4  WHERE u.id=?5")
-		public void updateUser(String address, long mobile_no,String password,String status,int id);
+		@Query("UPDATE User u SET u.address=?1,u.mobile_no=?2,u.password=?3,u.status=?4,u.notification=?5  WHERE u.id=?6")
+		public void updateUser(String address, long mobile_no,String password,String status,String notification,int id);
 		
 		
 		@Modifying
@@ -49,6 +49,10 @@ public interface UserDao extends JpaRepository<User,Integer>{
 		@Modifying
 		@Query("UPDATE User u SET u.status=?1  WHERE u.id=?2")
 		public void updateUserStatus(String status,int id);
+		
+//		@Modifying
+//		@Query("UPDATE User u SET u.notification=?1  WHERE u.id=?2")
+//		public void updateUserNotification(String notification,int id);
 		
 		 @Query("select count(*) from User u")
 			Integer userCount();

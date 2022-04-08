@@ -27,14 +27,18 @@ public class UserDTO {
 	private long mobile_no;
 	private int photo_id;
 	private String status1;
+	private String notification;
 
 	private int count = 0;
 
 	public UserDTO() {
 	}
 
+	
+
 	public UserDTO(int id, String name, @Email String email, String password, String aadhar_no, String role, Date dob,
-			String address, String gender, String blood_group, long mobile_no, int photo_id, String status1, int count) {
+			String address, String gender, String blood_group, long mobile_no, int photo_id, String status1,
+			String notification, int count) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
@@ -48,8 +52,11 @@ public class UserDTO {
 		this.mobile_no = mobile_no;
 		this.photo_id = photo_id;
 		this.status1 = status1;
+		this.notification = notification;
 		this.count = count;
 	}
+
+
 
 	public int getId() {
 		return id;
@@ -163,12 +170,28 @@ public class UserDTO {
 		this.status1 = status1;
 	}
 
+
+
+	public String getNotification() {
+		return notification;
+	}
+
+
+
+	public void setNotification(String notification) {
+		this.notification = notification;
+	}
+
+
+
 	@Override
 	public String toString() {
 		return String.format(
-				"UserDTO [id=%s, name=%s, email=%s, password=%s, aadhar_no=%s, role=%s, dob=%s, address=%s, gender=%s, blood_group=%s, mobile_no=%s, photo_id=%s, status1=%s, count=%s]",
+				"UserDTO [id=%s, name=%s, email=%s, password=%s, aadhar_no=%s, role=%s, dob=%s, address=%s, gender=%s, blood_group=%s, mobile_no=%s, photo_id=%s, status1=%s, notification=%s, count=%s]",
 				id, name, email, password, aadhar_no, role, dob, address, gender, blood_group, mobile_no, photo_id,
-				status1, count);
+				status1, notification, count);
 	}
+
+	
 
 }

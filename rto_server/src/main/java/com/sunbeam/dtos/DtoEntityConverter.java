@@ -27,6 +27,8 @@ public class DtoEntityConverter {
 		dto.setMobile_no(entity.getMobile_no());
 		dto.setRole(entity.getRole());
 		dto.setStatus1(entity.getStatus());
+		dto.setPhoto_id(entity.getPhoto_id());
+		dto.setNotification(entity.getNotification());
 //		dto.setPhoto_id(entity.getDatabaseFile().getId());
 		return dto;
 	}

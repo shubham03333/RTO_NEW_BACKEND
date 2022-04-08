@@ -247,10 +247,11 @@ public class UserController {
 		user.setPassword(UserDetails.getPassword());
 		user.setEmail(UserDetails.getEmail());
 		user.setStatus(UserDetails.getStatus());
+		user.setNotification(UserDetails.getNotification());
 //			user.setPassword(passwordEncoder.encode(UserDetails.getPassword()));
 
 //		userService.updateUser(user.getAddress(), user.getMobile_no(), user.getPassword(), user.getId());
-		userService.updateUser(user.getAddress(), user.getMobile_no(), user.getPassword(), user.getStatus(),
+		userService.updateUser(user.getAddress(), user.getMobile_no(), user.getPassword(), user.getStatus(),user.getNotification(),
 				user.getId());
 		return ResponseEntity.ok(user);
 	}
@@ -269,6 +270,21 @@ public class UserController {
 
 		return ResponseEntity.ok(user);
 	}
+
+//	@PutMapping("/updateNotification/{id}")
+//	public ResponseEntity<User> updateUserNotification(@PathVariable int id, @RequestBody User UserDetails) {
+//		User user = userService.findUserFromdbById(id);
+//		if (user == null) {
+//			return (ResponseEntity<User>) Response.error("User not exist with id :" + id);
+//		}
+//
+//		user.setNotification(UserDetails.getNotification());
+////			user.setPassword(passwordEncoder.encode(UserDetails.getPassword()));
+//
+//		userDao.updateUserStatus(user.getStatus(), user.getId());
+//
+//		return ResponseEntity.ok(user);
+//	}
 
 	// delete User rest api
 	@DeleteMapping("/{id}")

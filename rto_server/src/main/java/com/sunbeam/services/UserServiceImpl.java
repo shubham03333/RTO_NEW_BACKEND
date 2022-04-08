@@ -136,8 +136,8 @@ public class UserServiceImpl implements UserDetailsService {
 //		userDao.updateUser(address, mobile_no, password, id);
 //	}
 	
-	public void updateUser(String address, long mobile_no, String password,String status, int id) {
-		userDao.updateUser(address, mobile_no, password,status, id);
+	public void updateUser(String address, long mobile_no, String password,String status,String notification, int id) {
+		userDao.updateUser(address, mobile_no, password,status, notification, id);
 	}
 	
 	

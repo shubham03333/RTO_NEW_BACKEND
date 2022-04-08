@@ -35,6 +35,7 @@ public class User {
 	private String email;
 	private String password;
 	private int photo_id;
+	private String notification;
 	private String status="pending";
 
 	// ############ Working #########
@@ -81,8 +82,10 @@ public class User {
 	public User() {
 	}
 
+	
 	public User(int id, String aadhar_no, String name, String role, Date dob, String address, String gender,
-			String blood_group, long mobile_no, String email, String password, int photo_id, String status) {
+			String blood_group, long mobile_no, String email, String password, int photo_id, String notification,
+			String status) {
 		this.id = id;
 		this.aadhar_no = aadhar_no;
 		this.name = name;
@@ -95,8 +98,10 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.photo_id = photo_id;
+		this.notification = notification;
 		this.status = status;
 	}
+
 
 	public int getId() {
 		return id;
@@ -202,12 +207,27 @@ public class User {
 		this.status = status;
 	}
 
+
+
+
+	public String getNotification() {
+		return notification;
+	}
+
+
+	public void setNotification(String notification) {
+		this.notification = notification;
+	}
+
+
 	@Override
 	public String toString() {
 		return String.format(
-				"User [id=%s, aadhar_no=%s, name=%s, role=%s, dob=%s, address=%s, gender=%s, blood_group=%s, mobile_no=%s, email=%s, password=%s, photo_id=%s, status=%s]",
+				"User [id=%s, aadhar_no=%s, name=%s, role=%s, dob=%s, address=%s, gender=%s, blood_group=%s, mobile_no=%s, email=%s, password=%s, photo_id=%s, notification=%s, status=%s]",
 				id, aadhar_no, name, role, dob, address, gender, blood_group, mobile_no, email, password, photo_id,
-				status);
+				notification, status);
 	}
 
+	
+	
 }
